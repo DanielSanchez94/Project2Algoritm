@@ -1,4 +1,4 @@
-package framework;
+package pathagon;
 
 public class appPathagon {
 

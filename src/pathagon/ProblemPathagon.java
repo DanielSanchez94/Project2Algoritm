@@ -1,10 +1,10 @@
-package framework;
+package pathagon;
 
 import java.util.Arrays;
 import java.util.List;
 
-import Pathagon.AdversarySearchProblem;
-import Pathagon.AdversarySearchState;
+import framework.AdversarySearchProblem;
+import framework.AdversarySearchState;
 
 public class ProblemPathagon implements AdversarySearchProblem {
 
@@ -16,7 +16,7 @@ public class ProblemPathagon implements AdversarySearchProblem {
 		for(int i=0; i<newBoard.length; i++){
 			Arrays.fill(newBoard, 0);
 		}
-		StatePathagon init = new StatePathagon(false,14,14,1,newBoard);
+		StatePathagon init = new StatePathagon(true,14,14,1,newBoard);
 
 		return init;
 	}
@@ -34,7 +34,7 @@ public class ProblemPathagon implements AdversarySearchProblem {
 	}
 
 	public StatePathagon insertToken(StatePathagon state, int column, int row){
-
+		
 		int[][] auxBoard = new int[7][7];
 		for (int i=0; i<auxBoard.length; i++){
 			for (int j=0; j<auxBoard.length; j++){

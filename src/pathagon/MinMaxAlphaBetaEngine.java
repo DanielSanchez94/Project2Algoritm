@@ -1,11 +1,11 @@
-package framework;
+package pathagon;
 
 
 import java.util.List;
 
-import Pathagon.AdversarySearchEngine;
-import Pathagon.AdversarySearchProblem;
-import Pathagon.AdversarySearchState;
+import framework.AdversarySearchEngine;
+import framework.AdversarySearchProblem;
+import framework.AdversarySearchState;
 
 /**
  * Title:        MinMaxAlphaBeta<p>

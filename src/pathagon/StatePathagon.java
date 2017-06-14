@@ -1,8 +1,8 @@
-package framework;
+package pathagon;
 
 import java.util.Arrays;
 
-import Pathagon.AdversarySearchState;
+import framework.AdversarySearchState;
 
 public class StatePathagon implements AdversarySearchState {
 	private int tokensUser; // Player available tokens

@@ -1,5 +1,4 @@
-package Pathagon;
-
+package framework;
 
 public abstract class AdversarySearchEngine<P extends AdversarySearchProblem<State>, State extends AdversarySearchState> {
 

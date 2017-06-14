@@ -1,4 +1,4 @@
-package Pathagon;
+package framework;
 
 /**
  * Interface which defines the basic requirements on states, needed 

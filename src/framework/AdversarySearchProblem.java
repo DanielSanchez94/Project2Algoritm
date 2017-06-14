@@ -1,4 +1,4 @@
-package Pathagon;
+package framework;
 
 import java.util.List; // necessary due to the use of lists.
 //aca va la logica del juego

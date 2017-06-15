@@ -24,16 +24,17 @@ public class StatePathagon implements AdversarySearchState {
 	public int[][] board(){
 		return board;
 	}
-
-	public void setBoard(int[][] boardX) {
+	//Set method
+	public void board(int[][] boardX) {
 		this.board = boardX;
 	}
 
-	public boolean max(){
+	public boolean isMax(){
 		return max;
 	}
 
-	public void setMax(boolean maxX) {
+	//Set method
+	public void max(boolean maxX) {
 		this.max = maxX;
 	}
 
@@ -41,7 +42,8 @@ public class StatePathagon implements AdversarySearchState {
 		return turn;
 	}
 
-	public void setTurn(int turnX) {
+	//Set method
+	public void turn(int turnX) {
 		this.turn = turnX;
 	}
 
@@ -49,7 +51,8 @@ public class StatePathagon implements AdversarySearchState {
 		return tokensUser;
 	}
 
-	public void setTokensUser(int tokensX) {
+	//Set method
+	public void tokensUser(int tokensX) {
 		this.tokensUser = tokensX;
 	}
 
@@ -57,7 +60,8 @@ public class StatePathagon implements AdversarySearchState {
 		return tokensCPU;
 	}
 
-	public void setTokensCPU(int tokensX) {
+	//Set method
+	public void tokensCPU(int tokensX) {
 		this.tokensCPU = tokensX;
 	}
 
@@ -73,7 +77,7 @@ public class StatePathagon implements AdversarySearchState {
 
 	@Override
 	public boolean equals(AdversarySearchState other) {
-		StatePathagon state = (StatePathagon) other
+		StatePathagon state = (StatePathagon) other;
 		boolean res = true;
 		if (this.max != state.max)
 			res = false;

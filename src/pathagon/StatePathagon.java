@@ -10,14 +10,16 @@ public class StatePathagon implements AdversarySearchState {
 	private boolean max; //true==isMaxNode false==isMinNode
 	private int turn; // turn== 1 is turn of player // turn==2 is turn of CPU
 	private int[][] board; //Representations of the board
+	private String ruleApplied;
 
-	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, int[][] boardX){
+	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, int[][] boardX, String mov){
 
 		max = maxX;
 		tokensUser = tokensX;
 		tokensCPU = tokensY;
 		turn = turnX;
 		board = boardX;
+		ruleApplied = mov;
 
 	}
 
@@ -83,7 +85,7 @@ public class StatePathagon implements AdversarySearchState {
 
 	}
 
-	public boolean equals(StatePathagon other){
+	/*public boolean equals(StatePathagon other){
 
 		boolean res = true;
 		if (this.max != other.max){ res = false;}
@@ -96,7 +98,7 @@ public class StatePathagon implements AdversarySearchState {
 
 		return res;
 
-	}
+	}*/
 
 	public void printBoard(){
 		System.out.println("Tablero \n");
@@ -110,13 +112,25 @@ public class StatePathagon implements AdversarySearchState {
 
 	@Override
 	public boolean equals(AdversarySearchState other) {
-		// TODO Auto-generated method stub
-		return false;
+
+		StatePathagon state = (StatePathagon) other
+		boolean res = true;
+		if (this.max != state.max){ res = false;}
+		if (this.turn != state.turn){ res = false;}
+		if (this.tokensUser != state.tokensUser){ res = false;}
+		if (this.tokensCPU != state.tokensCPU){ res = false;}
+		for(int i=0; i<this.board.length; i++){
+			if(!Arrays.equals(this.board[i],state.board[i])){ res = false;}
+		}
+
+		return res;
+
 	}
 
 	@Override
 	public Object ruleApplied() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return ruleApplied;
+
 	}
 }

@@ -1,6 +1,7 @@
 package pathagon;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import framework.AdversarySearchProblem;
@@ -16,8 +17,9 @@ public class ProblemPathagon implements AdversarySearchProblem {
 		for(int i=0; i<newBoard.length; i++){
 			Arrays.fill(newBoard, 0);
 		}
-		StatePathagon init = new StatePathagon(true,14,14,1,newBoard);
-
+		//start the cpu
+		StatePathagon init = new StatePathagon(true,14,14,2,newBoard);
+		
 		return init;
 	}
 
@@ -42,7 +44,7 @@ public class ProblemPathagon implements AdversarySearchProblem {
 			}
 		}
 		StatePathagon res = null;
-		int currentTurn = state.turn();
+		int currentTurn = state.getTurn();
 		int turnTokens;
 		if( currentTurn==1){
 			turnTokens = state.tokensUser();
@@ -71,10 +73,44 @@ public class ProblemPathagon implements AdversarySearchProblem {
 
 	}
 
+	//retorna true si el casillero esta ocupado
+	public boolean occupied(int i, int j,int[][] table){
+		if(table[i][j]!=0){
+			return true;
+		}
+		return false;
+	}
+	
+	//este metodo devuelve true si el player me encerro una pieza
+	public boolean locked(AdversarySearchState state){		
+		return true;
+	}
+	
 	@Override
 	public List getSuccessors(AdversarySearchState state) {
-		// TODO Auto-generated method stub
-		return null;
+		//casteo
+		StatePathagon st = (StatePathagon) state;
+		//create list of states
+		List<StatePathagon> successors = new LinkedList<StatePathagon>();
+		//create newTokensCPU and newTokenUser
+		int newTokensCPU = st.getTokensCPU();
+		int newTokensUser = st.getTokensUser();
+		//I update max status in true 
+		boolean newMax = true;
+		//changes turn
+		int newTurn= 2;
+		int i=0;int j =0;
+		//mientras no recorra todo el tablero,y que tenga fichas, que cicle
+		while((i<st.board().length && (j<st.board().length))){
+			if(!occupied(i,j,st.board())&&(newTokensCPU!=0)){
+				StatePathagon newstate = new StatePathagon(newMax, newTokensUser, newTokensCPU, newTurn, st.board());
+				//si el casillero esta libre, entonces debo cargar el arreglo retornado con esa posibilidad
+				newstate.board()[i][j]=2;
+				successors.add(newstate);
+			}
+		}
+		return successors;
+			
 	}
 
 	@Override
@@ -88,5 +124,6 @@ public class ProblemPathagon implements AdversarySearchProblem {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 }

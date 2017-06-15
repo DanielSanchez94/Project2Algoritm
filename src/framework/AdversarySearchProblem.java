@@ -1,6 +1,8 @@
 package framework;
 
 import java.util.List; // necessary due to the use of lists.
+
+import pathagon.StatePathagon;
 //aca va la logica del juego
 /**
 * Interface which defines the basic elements necessary for 
@@ -88,5 +90,6 @@ public interface AdversarySearchProblem<S extends AdversarySearchState> {
 	 * for states, is returned. 
 	 */
   abstract public int maxValue();
+
       
 }

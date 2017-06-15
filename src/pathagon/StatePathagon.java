@@ -5,7 +5,7 @@ import java.util.Arrays;
 import framework.AdversarySearchState;
 
 public class StatePathagon implements AdversarySearchState {
-	private int tokensUser; // Player available tokens
+	private int tokensUser;// Player available tokens
 	private int tokensCPU; //CPU available tokens
 	private boolean max; //true==isMaxNode false==isMinNode
 	private int turn; // turn== 1 is turn of player // turn==2 is turn of CPU
@@ -21,6 +21,38 @@ public class StatePathagon implements AdversarySearchState {
 
 	}
 
+	public int getTokensUser() {
+		return tokensUser;
+	}
+
+	public void setTokensUser(int tokensUser) {
+		this.tokensUser = tokensUser;
+	}
+
+	public int getTokensCPU() {
+		return tokensCPU;
+	}
+
+	public void setTokensCPU(int tokensCPU) {
+		this.tokensCPU = tokensCPU;
+	}
+
+	public int[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(int[][] board) {
+		this.board = board;
+	}
+
+	public void setMax(boolean max) {
+		this.max = max;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
 	public int[][] board(){
 
 		return board;
@@ -33,7 +65,7 @@ public class StatePathagon implements AdversarySearchState {
 
 	}
 
-	public int turn(){
+	public int getTurn(){
 
 		return turn;
 

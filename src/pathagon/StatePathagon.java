@@ -13,92 +13,53 @@ public class StatePathagon implements AdversarySearchState {
 	private String ruleApplied;
 
 	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, int[][] boardX, String mov){
-
 		max = maxX;
 		tokensUser = tokensX;
 		tokensCPU = tokensY;
 		turn = turnX;
 		board = boardX;
 		ruleApplied = mov;
-
-	}
-
-	public int getTokensUser() {
-		return tokensUser;
-	}
-
-	public void setTokensUser(int tokensUser) {
-		this.tokensUser = tokensUser;
-	}
-
-	public int getTokensCPU() {
-		return tokensCPU;
-	}
-
-	public void setTokensCPU(int tokensCPU) {
-		this.tokensCPU = tokensCPU;
-	}
-
-	public int[][] getBoard() {
-		return board;
-	}
-
-	public void setBoard(int[][] board) {
-		this.board = board;
-	}
-
-	public void setMax(boolean max) {
-		this.max = max;
-	}
-
-	public void setTurn(int turn) {
-		this.turn = turn;
 	}
 
 	public int[][] board(){
-
 		return board;
-
 	}
 
-	public boolean isMax(){
+	public void setBoard(int[][] boardX) {
+		this.board = boardX;
+	}
 
+	public boolean max(){
 		return max;
-
 	}
 
-	public int getTurn(){
+	public void setMax(boolean maxX) {
+		this.max = maxX;
+	}
 
+	public int turn(){
 		return turn;
+	}
 
+	public void setTurn(int turnX) {
+		this.turn = turnX;
 	}
 
 	public int tokensUser(){
-
 		return tokensUser;
+	}
 
+	public void setTokensUser(int tokensX) {
+		this.tokensUser = tokensX;
 	}
 
 	public int tokensCPU(){
-
 		return tokensCPU;
-
 	}
 
-	/*public boolean equals(StatePathagon other){
-
-		boolean res = true;
-		if (this.max != other.max){ res = false;}
-		if (this.turn != other.turn){ res = false;}
-		if (this.tokensUser != other.tokensUser){ res = false;}
-		if (this.tokensCPU != other.tokensCPU){ res = false;}
-		for(int i=0; i<this.board.length; i++){
-			if(!Arrays.equals(this.board[i],other.board[i])){ res = false;}
-		}
-
-		return res;
-
-	}*/
+	public void setTokensCPU(int tokensX) {
+		this.tokensCPU = tokensX;
+	}
 
 	public void printBoard(){
 		System.out.println("Tablero \n");
@@ -112,25 +73,25 @@ public class StatePathagon implements AdversarySearchState {
 
 	@Override
 	public boolean equals(AdversarySearchState other) {
-
 		StatePathagon state = (StatePathagon) other
 		boolean res = true;
-		if (this.max != state.max){ res = false;}
-		if (this.turn != state.turn){ res = false;}
-		if (this.tokensUser != state.tokensUser){ res = false;}
-		if (this.tokensCPU != state.tokensCPU){ res = false;}
+		if (this.max != state.max)
+			res = false;
+		if (this.turn != state.turn)
+			res = false;
+		if (this.tokensUser != state.tokensUser)
+			res = false;
+		if (this.tokensCPU != state.tokensCPU)
+			res = false;
 		for(int i=0; i<this.board.length; i++){
-			if(!Arrays.equals(this.board[i],state.board[i])){ res = false;}
+			if(!Arrays.equals(this.board[i],state.board[i]))
+				res = false;
 		}
-
 		return res;
-
 	}
 
 	@Override
 	public Object ruleApplied() {
-
 		return ruleApplied;
-
 	}
 }

@@ -22,7 +22,6 @@ public class Token{
     this.mark = markX;
     this.coordenateX = -1;
     this.coordenateY = -1;
-    this.adjacentList = new LinkedList<Token>();
   }
 
   public int getId(){
@@ -41,9 +40,7 @@ public class Token{
     return this.coordenateY;
   }
 
-  public LinkedList<Token> getAdjacent(){
-    return adjacentList;
-  }
+
 
   public void setId(int idX){
     this.id = idX;
@@ -65,9 +62,7 @@ public class Token{
     this.adjacentList = adj;
   }
 
-  public void addAdjacent(Token x){
-    this.adjacentList.add(x);
-  }
+  
 
   public boolean equals(Token other){
     return (this.id == other.id && this.coordenateX == other.coordenateX && this.coordenateY == other.coordenateY) ;

@@ -88,11 +88,126 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return false;
 	}
 
-	//este metodo devuelve true si el player me encerro una pieza
-	public boolean locked(StatePathagon state){
-		return false;
+	//este metodo devuelve los indices del par encerrado en caso de que encierre a alguno 
+	public Pair locked(StatePathagon state, int i, int j){
+		Pair pair = new Pair(-1, -1);
+		//si es alguna de las esquinas, entonces no puede ser encerrado
+		if((i==0&&j==0)||(i==0&&j==6)||(i==6&&j==0)||(i==6&&j==6)){
+			pair.seti(-1);
+			pair.setj(-1);
+		}else{
+			if(state.getTurn()==1){
+				int p=1;
+				int q=2;
+			}
+			else{
+				int p=2;
+				int q=1;
+				if((j>1)&&(j<5)&&(i>1)&&(i<5)){
+					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
+						pair.seti(i+1);
+						pair.setj(j);
+					}
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+						pair.seti(i-1);
+						pair.setj(j);
+					}
+					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j+1);
+					}
+					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j-1);
+					}
+				if(j==0){
+					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j+1);
+					}else{
+						if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
+							pair.seti(i+1);
+							pair.setj(j);
+						}
+						if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+							pair.seti(i-1);
+							pair.setj(j);
+						}
+					}
+				}
+				if(j==6){
+					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j-1);
+					}else
+						if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
+							pair.seti(i+1);
+							pair.setj(j);
+						}
+						if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+							pair.seti(i-1);
+							pair.setj(j);
+						}
+					}
+				}
+				if(i==0){
+					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
+						pair.seti(i+1);
+						pair.setj(j);
+					}else{
+						if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
+							pair.seti(i);
+							pair.setj(j+1);
+						}
+						if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
+							pair.seti(i);
+							pair.setj(j-1);
+						}
+					}
+				}
+				if(i==6){
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+						pair.seti(i-1);
+						pair.setj(j);
+					}else{
+						if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
+							pair.seti(i);
+							pair.setj(j+1);
+						}
+						if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
+							pair.seti(i);
+							pair.setj(j-1);
+						}
+					}
+				}
+				if(j==1){
+					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j+1);
+					}
+				}
+				if(j==5){
+					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
+						pair.seti(i);
+						pair.setj(j-1);
+					}
+				}
+				if(i==1){
+					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
+						pair.seti(i+1);
+						pair.setj(j);
+					}
+				}
+				if(i==5){
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+						pair.seti(i-1);
+						pair.setj(j);
+					}
+				}
+			}
+		}
+		return pair;
 	}
-
 	// No recorria todo el tablero primero porque no se incrementaban los indices
 	// y ademas con un solo while no se puede recorrer una matriz.
 	// Cambiar de turno y de max  a min o viceverza lo hace insert.

@@ -3,16 +3,17 @@ package pathagon;
 import java.util.Arrays;
 
 import framework.AdversarySearchState;
+import utilities.*;
 
 public class StatePathagon implements AdversarySearchState {
 	private int tokensUser;// Player available tokens
 	private int tokensCPU; //CPU available tokens
 	private boolean max; //true==isMaxNode false==isMinNode
 	private int turn; // turn== 1 is turn of player // turn==2 is turn of CPU
-	private int[][] board; //Representations of the board
+	private Token[][] board; //Representations of the board
 	private String ruleApplied;
 
-	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, int[][] boardX, String mov){
+	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, Token[][] boardX, String mov){
 		max = maxX;
 		tokensUser = tokensX;
 		tokensCPU = tokensY;
@@ -21,11 +22,11 @@ public class StatePathagon implements AdversarySearchState {
 		ruleApplied = mov;
 	}
 
-	public int[][] board(){
+	public Token[][] getBoard(){
 		return board;
 	}
 	//Set method
-	public void board(int[][] boardX) {
+	public void setBoard(Token[][] boardX) {
 		this.board = boardX;
 	}
 
@@ -34,34 +35,34 @@ public class StatePathagon implements AdversarySearchState {
 	}
 
 	//Set method
-	public void max(boolean maxX) {
+	public void setMax(boolean maxX) {
 		this.max = maxX;
 	}
 
-	public int turn(){
+	public int getTurn(){
 		return turn;
 	}
 
 	//Set method
-	public void turn(int turnX) {
+	public void setTurn(int turnX) {
 		this.turn = turnX;
 	}
 
-	public int tokensUser(){
+	public int getTokensUser(){
 		return tokensUser;
 	}
 
 	//Set method
-	public void tokensUser(int tokensX) {
+	public void setTokensUser(int tokensX) {
 		this.tokensUser = tokensX;
 	}
 
-	public int tokensCPU(){
+	public int getTokensCPU(){
 		return tokensCPU;
 	}
 
 	//Set method
-	public void tokensCPU(int tokensX) {
+	public void setTokensCPU(int tokensX) {
 		this.tokensCPU = tokensX;
 	}
 
@@ -69,7 +70,7 @@ public class StatePathagon implements AdversarySearchState {
 		System.out.println("Tablero \n");
 		for (int i=0; i<this.board.length; i++){
 			for (int j=0; j<this.board.length; j++){
-				System.out.print(" | "+this.board[i][j]);
+				System.out.print(" | "+this.board[i][j].getId());
 			}
 			System.out.print(" | \n");
 		}

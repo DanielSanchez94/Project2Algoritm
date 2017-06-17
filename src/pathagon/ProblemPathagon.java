@@ -63,21 +63,40 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
 			auxBoard[row][column] = newToken;
-			if (currentTurn == 1){
-				if(state.getTokensCPU()>0)
-					res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
-				else
-					res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+			if( locked(state,row,column).getCoordenateX()==-1){
+				if (currentTurn == 1){
+					if(state.getTokensCPU()>0)
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+				}else{
+					if(state.getTokensUser()>0)
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+				}
 			}else{
-				if(state.getTokensUser()>0)
-					res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
-				else
-					res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+				int a=locked(state,row,column).getCoordenateX();
+				int b=locked(state,row,column).getCoordenateY();
+				auxBoard[a][b].setId(0);
+				if (currentTurn == 1){
+					state.setTokensCPU(turnTokens+1);
+					if(state.getTokensCPU()>0)
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+				}else
+					state.setTokensUser(turnTokens+1);
+					if(state.getTokensUser()>0)
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+				
 			}
 		}else{
 			if(auxBoard[row][column].getId()!=0)
 				System.out.println("Casillero ocupado");
-		}
+			}
 
 		return res;
 
@@ -90,151 +109,170 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return false;
 	}
 
-	//este metodo devuelve los indices del par encerrado en caso de que encierre a alguno
-	public Pair locked(StatePathagon state, int i, int j){
-		Pair pair = new Pair(-1, -1);
+//este metodo devuelve los indices del par encerrado en caso de que encierre a alguno
+	public Token locked(StatePathagon state, int i, int j){
+		Token tocklock = new Token(1);
 		//si es alguna de las esquinas, entonces no puede ser encerrado
 		if((i==0&&j==0)||(i==0&&j==6)||(i==6&&j==0)||(i==6&&j==6)){
-			pair.seti(-1);
-			pair.setj(-1);
+			tocklock.setCoordenateX(-1);
+			tocklock.setCoordenateY(-1);
 		}else{
 			if(state.getTurn()==1){
+				tocklock.setId(1);
 				int p=2;
 				int q=1;
 			}
 			else{
+				tocklock.setId(2);
 				int p=2;
 				int q=1;
 				if((j>1)&&(j<5)&&(i>1)&&(i<5)){
 					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-						pair.seti(i+1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i+1);
+						tocklock.setCoordenateY(j);
 					}
+					
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-						pair.seti(i-1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i-1);
+						tocklock.setCoordenateY(j);	
 					}
+					
 					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j+1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j+1);
 					}
+					
 					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j-1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j-1);	
 					}
+					
 				if(j==0){
 					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j+1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j+1);
 					}else{
 						if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-							pair.seti(i+1);
-							pair.setj(j);
+							tocklock.setCoordenateX(i+1);
+							tocklock.setCoordenateY(j);
 						}
+						
 						if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-							pair.seti(i-1);
-							pair.setj(j);
+							tocklock.setCoordenateX(i-1);
+							tocklock.setCoordenateY(j);
 						}
 					}
 				}
+				
 				if(j==6){
 					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j-1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j-1);
+						
 					}else
 						if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-							pair.seti(i+1);
-							pair.setj(j);
+							tocklock.setCoordenateX(i+1);
+							tocklock.setCoordenateY(j);
 						}
+					
 						if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-							pair.seti(i-1);
-							pair.setj(j);
+							tocklock.setCoordenateX(i-1);
+							tocklock.setCoordenateY(j);
 						}
 					}
 				}
+				
 				if(i==0){
 					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-						pair.seti(i+1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i+1);
+						tocklock.setCoordenateY(j);
+						
 					}else{
 						if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-							pair.seti(i);
-							pair.setj(j+1);
+							tocklock.setCoordenateX(i);
+							tocklock.setCoordenateY(j+1);
 						}
+						
 						if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-							pair.seti(i);
-							pair.setj(j-1);
+							tocklock.setCoordenateX(i);
+							tocklock.setCoordenateY(j-1);
 						}
 					}
 				}
+				
 				if(i==6){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-						pair.seti(i-1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i-1);
+						tocklock.setCoordenateY(j);
+						
 					}else{
 						if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-							pair.seti(i);
-							pair.setj(j+1);
+							tocklock.setCoordenateX(i);
+							tocklock.setCoordenateY(j+1);
 						}
+						
 						if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-							pair.seti(i);
-							pair.setj(j-1);
+							tocklock.setCoordenateX(i);
+							tocklock.setCoordenateY(j-1);
 						}
 					}
 				}
+				
 				if(j==1){
 					if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j+1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j+1);
 					}
 				}
+				
 				if(j==5){
 					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-						pair.seti(i);
-						pair.setj(j-1);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j-1);
 					}
 				}
+				
 				if(i==1){
 					if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-						pair.seti(i+1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i+1);
+						tocklock.setCoordenateY(j);
 					}
 				}
 				if(i==5){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-						pair.seti(i-1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i-1);
+						tocklock.setCoordenateY(j);
 					}
 				}
 				if(i==5){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-						pair.seti(i-1);
-						pair.setj(j);
+						tocklock.setCoordenateX(i-1);
+						tocklock.setCoordenateY(j);
 					}
 				}
-
+				
 				//comprueba si se encierra solo
 				if((j>0)&&(j<6)&&(i>0)&&(i<6)){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)||
 					   (state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
-						pair.seti(i);
-						pair.setj(j);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j);
 					}
 				}if((i==0)||(i==6)){
 					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
-						pair.seti(i);
-						pair.setj(j);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j);
 					}
 				if((j==0)||(j==6)){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)){
-						pair.seti(i);
-						pair.setj(j);
+						tocklock.setCoordenateX(i);
+						tocklock.setCoordenateY(j);
 					}
 				}
 				}
 			}
 		}
-		return pair;
+		return tocklock;
 	}
 	// No recorria todo el tablero primero porque no se incrementaban los indices
 	// y ademas con un solo while no se puede recorrer una matriz.
@@ -269,7 +307,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int i=0; i<state.getBoard().length; i++){
 				if(state.getBoard()[0][i].getId()==1){
 					Token init = state.getBoard()[0][i];
-					state.unmark();
 					aux = dfs_modified(init,state);
 					result = (result || (aux==7));
 				}
@@ -279,7 +316,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[j][0].getId()==1){
 					Token init = state.getBoard()[j][0];
-					state.unmark();
 					aux = dfs_modified(init,state);
 					result = (result || (aux==7));
 				}
@@ -300,7 +336,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[i][j].getId()==1){
 					Token init = state.getBoard()[i][j];
-					state.unmark();
 					auxUser = dfs_modified(init,state);
 				}
 				if(resultUser < auxUser)
@@ -313,7 +348,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[i][j].getId() == 2){
 					Token init = state.getBoard()[i][j];
-					state.unmark();
 					auxCPU = dfs_modified(init,state);
 				}
 				if(resultCPU < auxCPU)

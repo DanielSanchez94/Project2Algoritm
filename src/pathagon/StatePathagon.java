@@ -74,6 +74,7 @@ public class StatePathagon implements AdversarySearchState {
 			}
 			System.out.print(" | \n");
 		}
+		System.out.println("\n");
 	}
 
 	@Override

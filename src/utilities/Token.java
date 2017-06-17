@@ -1,11 +1,9 @@
 package utilities;
 
-import java.util.LinkedList;
 
 public class Token{
   private int id;
   private boolean mark;
-  private LinkedList<Token> adjacentList;
   private int coordenateX;
   private int coordenateY;
 
@@ -14,7 +12,6 @@ public class Token{
     this.mark = false;
     this.coordenateX = -1;
     this.coordenateY = -1;
-    this.adjacentList = new LinkedList<Token>();
   }
 
   public Token(int idX, boolean markX){
@@ -40,8 +37,6 @@ public class Token{
     return this.coordenateY;
   }
 
-
-
   public void setId(int idX){
     this.id = idX;
   }
@@ -57,12 +52,6 @@ public class Token{
   public void setCoordenateY(int coordenate){
     this.coordenateY = coordenate;
   }
-
-  public void setAdjacentList(LinkedList<Token> adj){
-    this.adjacentList = adj;
-  }
-
-  
 
   public boolean equals(Token other){
     return (this.id == other.id && this.coordenateX == other.coordenateX && this.coordenateY == other.coordenateY) ;

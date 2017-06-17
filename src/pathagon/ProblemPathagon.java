@@ -17,12 +17,14 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	public StatePathagon initialState() {
 		Token[][] newBoard = new Token[7][7];
 		for(int i=0; i<newBoard.length; i++){
-			Token newToken = new Token(0);
-			Arrays.fill(newBoard, newToken);
+			for(int j=0; j<newBoard.length; j++){
+				Token newToken = new Token(0);
+				newBoard[i][j] = newToken;
+			}
 		}
 		//start the cpu
 		// Si comienza la cpu deberia ser false (nodo min) o no?
-		StatePathagon init = new StatePathagon(true,14,14,2,newBoard,null);
+		StatePathagon init = new StatePathagon(true,14,14,1,newBoard,null);
 
 		return init;
 	}
@@ -41,7 +43,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
 	public StatePathagon insertToken(StatePathagon state, int column, int row){
-
 		Token[][] auxBoard = new Token[7][7];
 		for (int i=0; i<auxBoard.length; i++){
 			for (int j=0; j<auxBoard.length; j++){
@@ -74,7 +75,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 					res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
 			}
 		}else{
-			System.out.println("Casillero ocupado");
+			if(auxBoard[row][column].getId()!=0)
+				System.out.println("Casillero ocupado");
 		}
 
 		return res;
@@ -88,7 +90,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return false;
 	}
 
-	//este metodo devuelve los indices del par encerrado en caso de que encierre a alguno 
+	//este metodo devuelve los indices del par encerrado en caso de que encierre a alguno
 	public Pair locked(StatePathagon state, int i, int j){
 		Pair pair = new Pair(-1, -1);
 		//si es alguna de las esquinas, entonces no puede ser encerrado
@@ -211,7 +213,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	// No recorria todo el tablero primero porque no se incrementaban los indices
 	// y ademas con un solo while no se puede recorrer una matriz.
 	// Cambiar de turno y de max  a min o viceverza lo hace insert.
-	public List getSuccessors(StatePathagon state) {
+	public List<StatePathagon> getSuccessors(StatePathagon state) {
 		/* //casteo
 		StatePathagon st = (StatePathagon) state;*/
 		//create list of states
@@ -261,54 +263,137 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	// Se asume que el usuario juega de abajo hacia arriba y cpu juega de izquierda a
 	// derecha.
 	public int value(StatePathagon state) {
-		int aux = 0;
-		int result = 0;
-		if (state.getTurn()==1){
-			for(int i=0; i<state.getBoard().length; i++){
-				for(int j=0; j<state.getBoard().length; j++){
-					if(state.getBoard()[i][j].getId()==1){
-						Token init = state.getBoard()[i][j];
-						aux = dfs_modified(init,state);
-					}
-					if(result < aux)
-						result = aux;
+		int auxUser = 0;
+		int auxCPU = 0;
+		int resultUser = 0;
+		int resultCPU = 0;
+
+		for(int i=0; i<state.getBoard().length; i++){
+			for(int j=0; j<state.getBoard().length; j++){
+				if(state.getBoard()[i][j].getId()==1){
+					Token init = state.getBoard()[i][j];
+					auxUser = dfs_modified(init,state);
 				}
+				if(resultUser < auxUser)
+					resultUser = auxUser;
 			}
 		}
-		else{
-			for(int i=0; i<state.getBoard().length; i++){
-				for(int j=0; j<state.getBoard().length; j++){
-					if(state.getBoard()[i][j].getId() == 2){
-						Token init = state.getBoard()[i][j];
-						aux = dfs_modified(init,state);
-					}
-					if(result < aux)
-						result = aux;
+
+
+		for(int i=0; i<state.getBoard().length; i++){
+			for(int j=0; j<state.getBoard().length; j++){
+				if(state.getBoard()[i][j].getId() == 2){
+					Token init = state.getBoard()[i][j];
+					auxCPU = dfs_modified(init,state);
 				}
+				if(resultCPU < auxCPU)
+					resultCPU = auxCPU;
 			}
 		}
-		return result;
+
+		return resultCPU-resultUser;
 	}
 
-	public LinkedList<Token> adjacent(int i, int j, Token[][] board){
-		LinkedList<Token> adjacentList = new LinkedList<Token>();
-		if (board[i][j].getId() == board[i][j-1].getId()){
-			adjacentList.add(board[i][j-1]);
+	public List<Token> adjacent(int i, int j, Token[][] board){
+		List<Token> adjacentList = new LinkedList<Token>();
+		if(i>0 && i<6 && j>0 && j<6){
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
 		}
-		if (board[i][j].getId() == board[i][j+1].getId()){
-			adjacentList.add(board[i][j+1]);
+		if(i==0 && j==0){
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
 		}
-		if (board[i][j].getId() == board[i+1][j].getId()){
-			adjacentList.add(board[i+1][j]);
+		if(i==6 && j==0){
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
 		}
-		if (board[i][j].getId() == board[i-1][j].getId()){
-			adjacentList.add(board[i-1][j]);
+		if(i==0 && j==6){
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
+		}
+		if(i==6 && j==6){
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
+		}
+		if(i==0 && j>0 && j<6){
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
+		}
+		if(i==6 && j>0 && j<6){
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
+		}
+		if(i>0 && i<6 && j==0){
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
+			if (board[i][j].getId() == board[i][j+1].getId()){
+				adjacentList.add(board[i][j+1]);
+			}
+		}
+		if(i>0 && i<6 && j==6){
+			if (board[i][j].getId() == board[i+1][j].getId()){
+				adjacentList.add(board[i+1][j]);
+			}
+			if (board[i][j].getId() == board[i-1][j].getId()){
+				adjacentList.add(board[i-1][j]);
+			}
+			if (board[i][j].getId() == board[i][j-1].getId()){
+				adjacentList.add(board[i][j-1]);
+			}
 		}
 		return adjacentList;
 	}
 
-	public Token getUnvisitedAdj(LinkedList<Token> adj){
+	public Token getUnvisitedAdj(List<Token> adj){
 		int i=0;
+		if(adj.size()==0){
+			return null;
+		}
 		while(i<adj.size()){
 			if(adj.get(i).getMark()!= false)
 				i++;
@@ -323,7 +408,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		init.setMark(true);
 		while(!s.empty()){
 			Token u = s.peek();
-			LinkedList<Token> adj = adjacent(u.getCoordenateX(), u.getCoordenateY(), state.getBoard());
+			List<Token> adj = adjacent(u.getCoordenateX(), u.getCoordenateY(), state.getBoard());
 			Token w = getUnvisitedAdj(adj);
 			if(w!=null){
 				if(state.getTurn()==1)

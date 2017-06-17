@@ -212,7 +212,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 						pair.setj(j);
 					}
 				}
-				
+
 				//comprueba si se encierra solo
 				if((j>0)&&(j<6)&&(i>0)&&(i<6)){
 					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)||
@@ -269,6 +269,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int i=0; i<state.getBoard().length; i++){
 				if(state.getBoard()[0][i].getId()==1){
 					Token init = state.getBoard()[0][i];
+					state.unmark();
 					aux = dfs_modified(init,state);
 					result = (result || (aux==7));
 				}
@@ -278,6 +279,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[j][0].getId()==1){
 					Token init = state.getBoard()[j][0];
+					state.unmark();
 					aux = dfs_modified(init,state);
 					result = (result || (aux==7));
 				}
@@ -298,6 +300,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[i][j].getId()==1){
 					Token init = state.getBoard()[i][j];
+					state.unmark();
 					auxUser = dfs_modified(init,state);
 				}
 				if(resultUser < auxUser)
@@ -310,6 +313,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[i][j].getId() == 2){
 					Token init = state.getBoard()[i][j];
+					state.unmark();
 					auxCPU = dfs_modified(init,state);
 				}
 				if(resultCPU < auxCPU)

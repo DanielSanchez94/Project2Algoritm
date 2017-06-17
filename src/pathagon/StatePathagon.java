@@ -77,6 +77,14 @@ public class StatePathagon implements AdversarySearchState {
 		System.out.println("\n");
 	}
 
+	public void unmark(){
+		for (int i=0; i<this.board.length; i++){
+			for (int j=0; j<this.board.length; j++){
+				this.board[i][j].setMark(false);
+			}
+		}
+	}
+
 	@Override
 	public boolean equals(AdversarySearchState other) {
 		StatePathagon state = (StatePathagon) other;

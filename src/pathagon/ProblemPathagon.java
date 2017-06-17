@@ -43,12 +43,12 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
 	public StatePathagon insertToken(StatePathagon state, int column, int row){
-		Token[][] auxBoard = new Token[7][7];
+		/*Token[][] auxBoard = new Token[7][7];
 		for (int i=0; i<auxBoard.length; i++){
 			for (int j=0; j<auxBoard.length; j++){
 				auxBoard[i][j] = state.getBoard()[i][j];
 			}
-		}
+		}*/
 		StatePathagon res = null;
 		int currentTurn = state.getTurn();
 		int turnTokens;
@@ -58,46 +58,47 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			turnTokens = state.getTokensCPU();
 		}
 
-		if ((auxBoard[row][column].getId()==0) && (turnTokens>0)){
+		if ((!occupied(row,column,state.getBoard())) && (turnTokens>0)){
 			Token newToken = new Token(currentTurn);
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
-			auxBoard[row][column] = newToken;
-			if( locked(state,row,column).getCoordenateX()==-1){
+			state.getBoard()[row][column] = newToken;
+			//si no queda ninguna ficha encerrada, es el turno de player y le quedan fichas al jugador 
+			if(locked(state,row,column).getCoordenateX()==-1){
 				if (currentTurn == 1){
 					if(state.getTokensCPU()>0)
-						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
 					else
-						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
 				}else{
 					if(state.getTokensUser()>0)
-						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
 					else
-						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
 				}
 			}else{
+				//si encierra a alguna ficha
 				int a=locked(state,row,column).getCoordenateX();
 				int b=locked(state,row,column).getCoordenateY();
-				auxBoard[a][b].setId(0);
+				state.getBoard()[a][b].setId(0);//saco la ficha y
+				turnTokens++;//agrego una ficha al oponenete del current
 				if (currentTurn == 1){
-					state.setTokensCPU(turnTokens+1);
 					if(state.getTokensCPU()>0)
-						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
 					else
-						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
 				}else
-					state.setTokensUser(turnTokens+1);
 					if(state.getTokensUser()>0)
-						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
 					else
-						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
 				
 			}
 		}else{
-			if(auxBoard[row][column].getId()!=0)
+			if(occupied(row,column,state.getBoard())){
 				System.out.println("Casillero ocupado");
 			}
-
+		}	
 		return res;
 
 	}
@@ -274,9 +275,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		}
 		return tocklock;
 	}
-	// No recorria todo el tablero primero porque no se incrementaban los indices
-	// y ademas con un solo while no se puede recorrer una matriz.
-	// Cambiar de turno y de max  a min o viceverza lo hace insert.
+	
 	public List<StatePathagon> getSuccessors(StatePathagon state) {
 		/* //casteo
 		StatePathagon st = (StatePathagon) state;*/

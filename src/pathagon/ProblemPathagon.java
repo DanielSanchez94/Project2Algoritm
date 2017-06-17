@@ -99,8 +99,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			pair.setj(-1);
 		}else{
 			if(state.getTurn()==1){
-				int p=1;
-				int q=2;
+				int p=2;
+				int q=1;
 			}
 			else{
 				int p=2;
@@ -205,6 +205,32 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 						pair.seti(i-1);
 						pair.setj(j);
 					}
+				}
+				if(i==5){
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
+						pair.seti(i-1);
+						pair.setj(j);
+					}
+				}
+				
+				//comprueba si se encierra solo
+				if((j>0)&&(j<6)&&(i>0)&&(i<6)){
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)||
+					   (state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
+						pair.seti(i);
+						pair.setj(j);
+					}
+				}if((i==0)||(i==6)){
+					if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
+						pair.seti(i);
+						pair.setj(j);
+					}
+				if((j==0)||(j==6)){
+					if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)){
+						pair.seti(i);
+						pair.setj(j);
+					}
+				}
 				}
 			}
 		}

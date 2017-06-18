@@ -62,7 +62,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
 			state.getBoard()[row][column] = newToken;
-			//si no queda ninguna ficha encerrada, es el turno de player y le quedan fichas al jugador
 			if(locked(state,row,column).getCoordenateX()==-1){
 				if (currentTurn == 1){
 					if(state.getTokensCPU()>0)
@@ -76,11 +75,10 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
 				}
 			}else{
-				//si encierra a alguna ficha
 				int a=locked(state,row,column).getCoordenateX();
 				int b=locked(state,row,column).getCoordenateY();
-				state.getBoard()[a][b].setId(0);//saco la ficha y
-				turnTokens++;//agrego una ficha al oponenete del current
+				state.getBoard()[a][b].setId(0);
+				turnTokens++;
 				if (currentTurn == 1){
 					if(state.getTokensCPU()>0)
 						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
@@ -475,7 +473,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			List<Token> adj = adjacent(u.getCoordenateX(), u.getCoordenateY(), state.getBoard());
 			Token w = getUnvisitedAdj(adj);
 			if(w!=null){
-				System.out.println("OK....");
 				if(state.getTurn()==1)
 					dist = Math.max(dist, Math.abs(w.getCoordenateY()-init.getCoordenateY()));
 				else

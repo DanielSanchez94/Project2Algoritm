@@ -35,32 +35,33 @@ public class appPathagon {
 		//-------------TEST---------------
 		/*ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon newState = problem.initialState();
+		newState.setTurn(2);
 		System.out.println("TURNO DE: "+newState.getTurn());
-		Token token1 = new Token(1,0,0);
-		Token token2 = new Token(1,0,1);
-		Token token3 = new Token(1,0,2);
-		Token token4 = new Token(1,1,1);
-		Token token5 = new Token(1,1,2);
-		Token token6 = new Token(1,2,2);
-		Token token7 = new Token(1,2,3);
-		Token token8 = new Token(1,2,4);
+		Token token1 = new Token(2,0,0);
+		Token token2 = new Token(2,0,1);
+		Token token3 = new Token(2,0,2);
+		Token token4 = new Token(2,1,1);
+		Token token5 = new Token(2,1,2);
+		Token token6 = new Token(2,3,2);
+		Token token7 = new Token(2,2,3);
+		Token token8 = new Token(2,2,4);
 		Token[][] newBoard = newState.getBoard();
 		newBoard[0][0] = token1;
 		newBoard[0][1] = token2;
 		newBoard[0][2] = token3;
 		newBoard[1][1] = token4;
 		newBoard[1][2] = token5;
-		newBoard[2][2] = token6;
+		newBoard[3][2] = token6;
 		newBoard[2][3] = token7;
 		newBoard[2][4] = token8;
-		newState.setBoard(newBoard); */
+		newState.setBoard(newBoard);
 		//ADJACENT WORK
 		//List<Token> adj = problem.adjacent(token2.getCoordenateX(), token2.getCoordenateY(), newState.getBoard());
 		//Token tokenaux = problem.getUnvisitedAdj(adj);
 		//System.out.println(tokenaux.getCoordenateX()+" , "+tokenaux.getCoordenateY());
-		//DFS_MODIFIED NOT WORK
-		//System.out.println("DFS: "+problem.dfs_modified(token1,newState));
-		//showGame(newState);
+		//DFS_MODIFIED WORK
+		System.out.println("DFS: "+problem.dfs_modified(token1,newState));
+		showGame(newState); */
 
 
 
@@ -68,7 +69,7 @@ public class appPathagon {
 
 
 
-		ProblemPathagon problem = new ProblemPathagon();
+		/*ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon currentState = problem.initialState();
 		int depth = 4;
 		MinMaxAlphaBetaEngine engine = new MinMaxAlphaBetaEngine(problem,depth);
@@ -83,7 +84,7 @@ public class appPathagon {
 		}
 		else{
 			System.out.println("GANO EL USUARIO");
-		}
+		}*/
 	}
 
 }

@@ -43,12 +43,12 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
 	public StatePathagon insertToken(StatePathagon state, int column, int row){
-		/*Token[][] auxBoard = new Token[7][7];
+		Token[][] auxBoard = new Token[7][7];
 		for (int i=0; i<auxBoard.length; i++){
 			for (int j=0; j<auxBoard.length; j++){
 				auxBoard[i][j] = state.getBoard()[i][j];
 			}
-		}*/
+		}
 		StatePathagon res = null;
 		int currentTurn = state.getTurn();
 		int turnTokens;
@@ -477,9 +477,9 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			if(w!=null){
 				System.out.println("OK....");
 				if(state.getTurn()==1)
-					dist = Math.max(dist, Math.abs(w.getCoordenateX()-init.getCoordenateX()));
+					dist = Math.max(dist, Math.abs(w.getCoordenateY()-init.getCoordenateY()));
 				else
-					dist = Math.max(dist, Math.abs(w.getCoordenateY()-init.getCoordenateX()));
+					dist = Math.max(dist, Math.abs(w.getCoordenateX()-init.getCoordenateX()));
 				w.setMark(true);
 				s.push(w);
 			}
@@ -487,7 +487,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 				s.pop();
 			}
 		}
-		return dist;
+		return dist+1;
 	}
 
 

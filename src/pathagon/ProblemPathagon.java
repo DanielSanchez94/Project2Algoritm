@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.Iterator;
 
 import framework.AdversarySearchProblem;
 import framework.AdversarySearchState;
@@ -49,7 +50,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 				auxBoard[i][j] = state.getBoard()[i][j];
 			}
 		}
-		StatePathagon res = null;
+		StatePathagon res = state;
 		int currentTurn = state.getTurn();
 		int turnTokens;
 		if( currentTurn==1){
@@ -61,38 +62,38 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			Token newToken = new Token(currentTurn);
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
-			state.getBoard()[row][column] = newToken;
-			if(locked(state,row,column).getCoordenateX()==-1){
+			auxBoard[row][column] = newToken;
+			if(locked(res,row,column).getCoordenateX()==-1){
 				if (currentTurn == 1){
-					if(state.getTokensCPU()>0)
-						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
+					if(res.getTokensCPU()>0)
+						res = new StatePathagon(!res.isMax(),turnTokens-1,res.getTokensCPU(),2,auxBoard,"Insert");
 					else
-						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
+						res = new StatePathagon(res.isMax(),turnTokens-1, res.getTokensCPU(),1,auxBoard,"Insert");
 				}else{
-					if(state.getTokensUser()>0)
-						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
+					if(res.getTokensUser()>0)
+						res = new StatePathagon(!res.isMax(),res.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
 					else
-						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
+						res = new StatePathagon(res.isMax(),res.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
 				}
 			}else{
-				int a=locked(state,row,column).getCoordenateX();
-				int b=locked(state,row,column).getCoordenateY();
-				state.getBoard()[a][b].setId(0);
+				int a=locked(res,row,column).getCoordenateX();
+				int b=locked(res,row,column).getCoordenateY();
+				auxBoard[a][b].setId(0);
 				turnTokens++;
 				if (currentTurn == 1){
-					if(state.getTokensCPU()>0)
-						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
+					if(res.getTokensCPU()>0)
+						res = new StatePathagon(!res.isMax(),turnTokens-1,res.getTokensCPU(),2,auxBoard,"Insert");
 					else
-						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
+						res = new StatePathagon(res.isMax(),turnTokens-1, res.getTokensCPU(),1,auxBoard,"Insert");
 				}else
-					if(state.getTokensUser()>0)
-						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
+					if(res.getTokensUser()>0)
+						res = new StatePathagon(!res.isMax(),res.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
 					else
-						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
+						res = new StatePathagon(res.isMax(),res.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
 
 			}
 		}else{
-			if(occupied(row,column,state.getBoard())){
+			if(occupied(row,column,res.getBoard())){
 				System.out.println("Casillero ocupado");
 			}
 		}

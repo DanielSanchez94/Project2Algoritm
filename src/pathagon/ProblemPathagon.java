@@ -42,7 +42,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	}
 
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
-	public StatePathagon insertToken(StatePathagon state, int column, int row){
+	public StatePathagon insertToken(StatePathagon state, int row, int column){
 		Token[][] auxBoard = new Token[7][7];
 		for (int i=0; i<auxBoard.length; i++){
 			for (int j=0; j<auxBoard.length; j++){
@@ -106,7 +106,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			return true;
 		return false;
 	}
-
 //este metodo devuelve los indices del par encerrado en caso de que encierre a alguno
 	public Token locked(StatePathagon state, int i, int j){
 		Token tocklock = new Token(1);

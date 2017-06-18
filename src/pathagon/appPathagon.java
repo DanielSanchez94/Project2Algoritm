@@ -33,14 +33,14 @@ public class appPathagon {
 
 	public static void main(String[] args) {
 		//-------------TEST---------------
-		/*ProblemPathagon problem = new ProblemPathagon();
+		ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon newState = problem.initialState();
 		//newState.setTokensUser(0);
 		//newState.setTokensCPU(0);
 		//newState.setTurn(2);
 		System.out.println("TURNO DE: "+newState.getTurn());
 		Token token1 = new Token(1,0,0);
-		Token token2 = new Token(1,0,1);
+		Token token2 = new Token(2,0,1);
 		Token token3 = new Token(1,0,2);
 		Token token4 = new Token(1,0,3);
 		Token token5 = new Token(1,0,4);
@@ -51,13 +51,13 @@ public class appPathagon {
 		Token[][] newBoard = newState.getBoard();
 		newBoard[0][0] = token1;
 		newBoard[0][1] = token2;
-		newBoard[0][2] = token3;
-		newBoard[0][3] = token4;
-		newBoard[0][4] = token5;
-		newBoard[0][5] = token6;
-		newBoard[0][6] = token7;
-		newBoard[2][4] = token8;
-		newBoard[3][2] = token9;
+		//newBoard[0][2] = token3;
+		//newBoard[0][3] = token4;
+		//newBoard[0][4] = token5;
+		//newBoard[0][5] = token6;
+		//newBoard[0][6] = token7;
+		//newBoard[2][4] = token8;
+		//newBoard[3][2] = token9;
 		newState.setBoard(newBoard);
 		//ADJACENT WORK
 		//List<Token> adj = problem.adjacent(token2.getCoordenateX(), token2.getCoordenateY(), newState.getBoard());
@@ -69,14 +69,24 @@ public class appPathagon {
 		//VALUE WORK
 		//System.out.println("VALUE: "+problem.value(newState));
 		//END WORK
-		//System.out.println("END: "+problem.end(newState)); */
+		//System.out.println("END: "+problem.end(newState));
+		//INSERT AND locked
+		Scanner scan = new Scanner(System.in);
+		System.out.println("TURNO: "+newState.getTurn()+" Fichas jug: "+newState.getTokensUser()+" FICHAS CPU: "+newState.getTokensCPU());
+		System.out.println("INGRESE LA COORDENADA X: \n");
+		int x = scan.nextInt();
+		System.out.println("INGRESE LA COORDENADA Y: \n");
+		int y = scan.nextInt();
+		newState = problem.insertToken(newState,x,y);
+		showGame(newState);
+		System.out.println("TURNO: "+newState.getTurn()+" Fichas jug: "+newState.getTokensUser()+" FICHAS CPU: "+newState.getTokensCPU());
 
 
 
 
 
 
-		ProblemPathagon problem = new ProblemPathagon();
+		/*ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon currentState = problem.initialState();
 		int depth = 4;
 		MinMaxAlphaBetaEngine engine = new MinMaxAlphaBetaEngine(problem,depth);
@@ -91,7 +101,7 @@ public class appPathagon {
 		}
 		else{
 			System.out.println("GANO EL USUARIO");
-		}
+		}*/
 	}
 
 }

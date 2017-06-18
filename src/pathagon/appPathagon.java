@@ -33,7 +33,7 @@ public class appPathagon {
 
 	public static void main(String[] args) {
 		//-------------TEST---------------
-		ProblemPathagon problem = new ProblemPathagon();
+		/*ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon newState = problem.initialState();
 		System.out.println("TURNO DE: "+newState.getTurn());
 		Token token1 = new Token(1,0,0);
@@ -53,14 +53,14 @@ public class appPathagon {
 		newBoard[2][2] = token6;
 		newBoard[2][3] = token7;
 		newBoard[2][4] = token8;
-		newState.setBoard(newBoard);
+		newState.setBoard(newBoard); */
 		//ADJACENT WORK
 		//List<Token> adj = problem.adjacent(token2.getCoordenateX(), token2.getCoordenateY(), newState.getBoard());
 		//Token tokenaux = problem.getUnvisitedAdj(adj);
 		//System.out.println(tokenaux.getCoordenateX()+" , "+tokenaux.getCoordenateY());
 		//DFS_MODIFIED NOT WORK
-		System.out.println("DFS: "+problem.dfs_modified(token1,newState));
-		showGame(newState);
+		//System.out.println("DFS: "+problem.dfs_modified(token1,newState));
+		//showGame(newState);
 
 
 
@@ -68,7 +68,7 @@ public class appPathagon {
 
 
 
-		/*ProblemPathagon problem = new ProblemPathagon();
+		ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon currentState = problem.initialState();
 		int depth = 4;
 		MinMaxAlphaBetaEngine engine = new MinMaxAlphaBetaEngine(problem,depth);
@@ -83,7 +83,7 @@ public class appPathagon {
 		}
 		else{
 			System.out.println("GANO EL USUARIO");
-		}*/
+		}
 	}
 
 }

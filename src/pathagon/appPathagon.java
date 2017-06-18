@@ -70,8 +70,8 @@ public class appPathagon {
 		//System.out.println("VALUE: "+problem.value(newState));
 		//END WORK
 		//System.out.println("END: "+problem.end(newState));
-		//INSERT AND locked
-		Scanner scan = new Scanner(System.in);
+		//INSERT AND LOCKED WORK
+		/*Scanner scan = new Scanner(System.in);
 		System.out.println("TURNO: "+newState.getTurn()+" Fichas jug: "+newState.getTokensUser()+" FICHAS CPU: "+newState.getTokensCPU());
 		System.out.println("INGRESE LA COORDENADA X: \n");
 		int x = scan.nextInt();
@@ -80,7 +80,15 @@ public class appPathagon {
 		newState = problem.insertToken(newState,x,y);
 		showGame(newState);
 		System.out.println("TURNO: "+newState.getTurn()+" Fichas jug: "+newState.getTokensUser()+" FICHAS CPU: "+newState.getTokensCPU());
-
+		newState.setTurn(2);
+		System.out.println("INGRESE LA COORDENADA X: \n");
+		int x2 = scan.nextInt();
+		System.out.println("INGRESE LA COORDENADA Y: \n");
+		int y2 = scan.nextInt();
+		newState = problem.insertToken(newState,x2,y2);
+		showGame(newState);
+		System.out.println("TURNO: "+newState.getTurn()+" Fichas jug: "+newState.getTokensUser()+" FICHAS CPU: "+newState.getTokensCPU());
+		*/
 
 
 

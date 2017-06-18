@@ -9,8 +9,11 @@ import java.util.List;
 public class appPathagon {
 
 	private static void showGame(StatePathagon state){
-		System.out.println("ES EL TURNO DEL JUGADOR: "+state.getTurn()+ "\n");
 		state.printBoard();
+		System.out.println("ES EL TURNO DEL JUGADOR: "+state.getTurn()+ "\n");
+		System.out.println("USER TIENE: "+state.getTokensUser()+" FICHAS");
+		System.out.println("CPU TIENE: "+state.getTokensCPU()+" FICHAS \n");
+
 	}
 
 	private static StatePathagon play(ProblemPathagon problem, StatePathagon state, MinMaxAlphaBetaEngine<ProblemPathagon,StatePathagon> engine){
@@ -19,9 +22,9 @@ public class appPathagon {
 		int x,y;
 		if(state.getTurn()==1){
 			System.out.println("DEBE INGRESAR LAS COORDENADAS DONDE INSERTAR LA FICHA");
-			System.out.println("INGRESE LA COORDENADA X: \n");
+			System.out.println("INGRESE LA COORDENADA X: ");
 			x = scan.nextInt();
-			System.out.println("INGRESE LA COORDENADA Y: \n");
+			System.out.println("INGRESE LA COORDENADA Y: ");
 			y = scan.nextInt();
 			res = problem.insertToken(state,x,y);
 		}
@@ -33,7 +36,7 @@ public class appPathagon {
 
 	public static void main(String[] args) {
 		//-------------TEST---------------
-		ProblemPathagon problem = new ProblemPathagon();
+		/*ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon newState = problem.initialState();
 		//newState.setTokensUser(0);
 		//newState.setTokensCPU(0);
@@ -58,14 +61,14 @@ public class appPathagon {
 		//newBoard[0][6] = token7;
 		//newBoard[2][4] = token8;
 		//newBoard[3][2] = token9;
-		newState.setBoard(newBoard);
+		//newState.setBoard(newBoard);
 		//ADJACENT WORK
 		//List<Token> adj = problem.adjacent(token2.getCoordenateX(), token2.getCoordenateY(), newState.getBoard());
 		//Token tokenaux = problem.getUnvisitedAdj(adj);
 		//System.out.println(tokenaux.getCoordenateX()+" , "+tokenaux.getCoordenateY());
 		//DFS_MODIFIED WORK
 		//System.out.println("DFS: "+problem.dfs_modified(token1,newState));
-		showGame(newState);
+		//showGame(newState);
 		//VALUE WORK
 		//System.out.println("VALUE: "+problem.value(newState));
 		//END WORK
@@ -94,7 +97,7 @@ public class appPathagon {
 
 
 
-		/*ProblemPathagon problem = new ProblemPathagon();
+		ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon currentState = problem.initialState();
 		int depth = 4;
 		MinMaxAlphaBetaEngine engine = new MinMaxAlphaBetaEngine(problem,depth);
@@ -109,7 +112,7 @@ public class appPathagon {
 		}
 		else{
 			System.out.println("GANO EL USUARIO");
-		}*/
+		}
 	}
 
 }

@@ -21,6 +21,13 @@ public class Token{
     this.coordenateY = -1;
   }
 
+  public Token(int idX, int x, int y){
+    this.id = idX;
+    this.mark = false;
+    this.coordenateX = x;
+    this.coordenateY = y;
+  }
+
   public int getId(){
     return this.id;
   }

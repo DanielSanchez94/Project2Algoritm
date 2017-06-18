@@ -57,7 +57,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		}else{
 			turnTokens = state.getTokensCPU();
 		}
-
+		System.out.println("TURNO: "+currentTurn+" Cant fichas: "+turnTokens);
 		if ((auxBoard[row][column].getId()==0) && (turnTokens>0)){
 			Token newToken = new Token(currentTurn);
 			newToken.setCoordenateX(column);
@@ -421,14 +421,16 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	public Token getUnvisitedAdj(List<Token> adj){
 		int i=0;
-		if(adj.size()==0){
-			return null;
-		}
 		while(i<adj.size()){
-			if(adj.get(i).getMark()!= false)
+			if(adj.get(i).getMark() == true)
 				i++;
+			else
+				break;
 		}
-		return adj.get(i);
+		if(i<adj.size())
+			return adj.get(i);
+		else
+			return null;
 	}
 
 	public int dfs_modified(Token init, StatePathagon state){
@@ -441,6 +443,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			List<Token> adj = adjacent(u.getCoordenateX(), u.getCoordenateY(), state.getBoard());
 			Token w = getUnvisitedAdj(adj);
 			if(w!=null){
+				System.out.println("OK....");
 				if(state.getTurn()==1)
 					dist = Math.max(dist, Math.abs(w.getCoordenateX()-init.getCoordenateX()));
 				else

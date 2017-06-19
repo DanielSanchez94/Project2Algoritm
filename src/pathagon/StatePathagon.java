@@ -67,7 +67,7 @@ public class StatePathagon implements AdversarySearchState {
 	}
 
 	public void printBoard(){
-		System.out.println("Tablero \n");
+		System.out.println("TABLERO \n");
 		for (int i=0; i<this.board.length; i++){
 			for (int j=0; j<this.board.length; j++){
 				System.out.print(" | "+this.board[i][j].getId());

@@ -276,13 +276,13 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		int aux=0;
 		if(state.getTokensUser() == 0 && state.getTokensCPU() == 0)
 			return true;
+
 		if (state.getTurn()==1){
 			for(int i=0; i<state.getBoard().length; i++){
 				if(state.getBoard()[0][i].getId()==1){
 					Token init = state.getBoard()[0][i];
 					//System.out.println("ID"+init.getId()+" Fila: "+init.getCoordenateY()+" colum "+init.getCoordenateX());
 					aux = dfs_modified(init,state);
-					//System.out.println("RES: "+aux);
 				}
 			}
 		}
@@ -300,33 +300,33 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	// Se asume que el usuario juega de abajo hacia arriba y cpu juega de izquierda a
 	// derecha.
 	public int value(StatePathagon state) {
-		int auxUser = 0;
-		int auxCPU = 0;
-		int resultUser = 0;
-		int resultCPU = 0;
-
-		for(int i=0; i<state.getBoard().length; i++){
-			for(int j=0; j<state.getBoard().length; j++){
-				if(state.getBoard()[i][j].getId()==1){
-					Token init = state.getBoard()[i][j];
-					auxUser = dfs_modified(init,state);
+		int aux = 0;
+		int result = 0;
+		if(state.getTurn()==1){
+			for(int i=0; i<state.getBoard().length; i++){
+				for(int j=0; j<state.getBoard().length; j++){
+					if(state.getBoard()[i][j].getId()==1){
+						Token init = state.getBoard()[i][j];
+						aux = dfs_modified(init,state);
+					}
+					if(result < aux)
+						result = aux;
 				}
-				if(resultUser < auxUser)
-					resultUser = auxUser;
 			}
 		}
-
-		for(int i=0; i<state.getBoard().length; i++){
-			for(int j=0; j<state.getBoard().length; j++){
-				if(state.getBoard()[i][j].getId() == 2){
-					Token init = state.getBoard()[i][j];
-					auxCPU = dfs_modified(init,state);
+		else{
+			for(int i=0; i<state.getBoard().length; i++){
+				for(int j=0; j<state.getBoard().length; j++){
+					if(state.getBoard()[i][j].getId() == 2){
+						Token init = state.getBoard()[i][j];
+						aux = dfs_modified(init,state);
+					}
+					if(result < aux)
+						result = aux;
 				}
-				if(resultCPU < auxCPU)
-					resultCPU = auxCPU;
 			}
 		}
-		return resultCPU-resultUser;
+		return 7 - result;
 	}
 
 	public List<Token> adjacent(int j, int i, Token[][] board){

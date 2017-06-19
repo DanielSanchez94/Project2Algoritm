@@ -36,18 +36,21 @@ public class appPathagon {
 	public static void main(String[] args) {
 		ProblemPathagon problem = new ProblemPathagon();
 		StatePathagon currentState = problem.initialState();
-		int depth = 4;
+		int depth = 5;
 		MinMaxAlphaBetaEngine engine = new MinMaxAlphaBetaEngine(problem,depth);
 		while(!problem.end(currentState)){
 			showGame(currentState);
 			currentState = play(problem,currentState,engine);
 		}
 		showGame(currentState);
-		if(problem.value(currentState)>0){
-			System.out.println("GANO LA MAQUINA");
+		if(problem.value(currentState)==0){
+			if(currentState.getTurn()==1)
+				System.out.println("RESULTADO DEL JUEGO: EL USUARIO GANA");
+			else
+				System.out.println("RESULTADO DEL JUEGO: LA MAQUINA GANA");
 		}
 		else{
-			System.out.println("GANO EL USUARIO");
+			System.out.println("RESULTADO DEL JUEGO: EMPATE");
 		}
 		/*Token token1 = new Token(1,0,6);
 		Token token2 = new Token(1,1,6);

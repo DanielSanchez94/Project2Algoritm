@@ -22,7 +22,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 				newBoard[i][j] = newToken;
 			}
 		}
-		StatePathagon init = new StatePathagon(true,14,14,1,newBoard,null);
+		StatePathagon init = new StatePathagon(false,14,14,1,newBoard,null);
 
 		return init;
 	}
@@ -273,29 +273,28 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 
 	public boolean end(StatePathagon state) {
-		boolean result = false;
-		int aux = 0;
+		int aux=0;
 		if(state.getTokensUser() == 0 && state.getTokensCPU() == 0)
 			return true;
 		if (state.getTurn()==1){
 			for(int i=0; i<state.getBoard().length; i++){
 				if(state.getBoard()[0][i].getId()==1){
 					Token init = state.getBoard()[0][i];
+					//System.out.println("ID"+init.getId()+" Fila: "+init.getCoordenateY()+" colum "+init.getCoordenateX());
 					aux = dfs_modified(init,state);
-					result = (result || (aux==7));
+					//System.out.println("RES: "+aux);
 				}
 			}
 		}
 		else{
 			for(int j=0; j<state.getBoard().length; j++){
-				if(state.getBoard()[j][0].getId()==1){
-					Token init = state.getBoard()[j][0];
+				if(state.getBoard()[0][j].getId()==2){
+					Token init = state.getBoard()[0][j];
 					aux = dfs_modified(init,state);
-					result = (result || (aux==7));
 				}
 			}
 		}
-		return result;
+		return aux==7;
 	}
 
 	// Se asume que el usuario juega de abajo hacia arriba y cpu juega de izquierda a
@@ -317,7 +316,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			}
 		}
 
-
 		for(int i=0; i<state.getBoard().length; i++){
 			for(int j=0; j<state.getBoard().length; j++){
 				if(state.getBoard()[i][j].getId() == 2){
@@ -328,11 +326,10 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 					resultCPU = auxCPU;
 			}
 		}
-
 		return resultCPU-resultUser;
 	}
 
-	public List<Token> adjacent(int i, int j, Token[][] board){
+	public List<Token> adjacent(int j, int i, Token[][] board){
 		List<Token> adjacentList = new LinkedList<Token>();
 		if(i>0 && i<6 && j>0 && j<6){
 			if (board[i][j].getId() == board[i][j-1].getId()){
@@ -442,6 +439,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	}
 
 	public int dfs_modified(Token init, StatePathagon state){
+		state.unmark();
 		int dist = 0;
 		Stack<Token> s = new Stack<Token>();
 		s.push(init);

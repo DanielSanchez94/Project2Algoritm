@@ -21,11 +21,11 @@ public class Token{
     this.coordenateY = -1;
   }
 
-  public Token(int idX, int x, int y){
+  public Token(int idX, int row, int column){
     this.id = idX;
     this.mark = false;
-    this.coordenateX = x;
-    this.coordenateY = y;
+    this.coordenateX = column;
+    this.coordenateY = row;
   }
 
   public int getId(){

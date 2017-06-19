@@ -38,7 +38,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return 10000;
 
 	}
-/*
+
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
 	public StatePathagon insertToken(StatePathagon state, int row, int column){
 		Token[][] auxBoard = new Token[7][7];
@@ -79,10 +79,10 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return res;
 
 	}
-*/
+
 	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
-		public StatePathagon insertToken(StatePathagon state, int column, int row){
-			
+		/*public StatePathagon insertToken(StatePathagon state, int column, int row){
+
 			StatePathagon res = null;
 			int currentTurn = state.getTurn();
 			int turnTokens;
@@ -125,7 +125,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 							res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
 						else
 							res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
-					
+
 				}
 			}else{
 				if(state.getBoard()[row][column].getId()!=0)
@@ -134,19 +134,19 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 			return res;
 
-	}
+	}*/
 	//retorna true si el casillero esta ocupado
 	public boolean occupied(int i, int j,Token[][] board){
 		if(board[i][j].getId()!=0)
 			return true;
 		return false;
 	}
-	
+
 	public void insCoor(int i, int j, Token f){
-		f.setCoordenateX(i);
-		f.setCoordenateY(j);
+		f.setCoordenateX(j);
+		f.setCoordenateY(i);
 	}
-	
+
 	public Token locked(StatePathagon state, int i, int j){
 		Token tokenLock = new Token(1);
 		int p;
@@ -172,7 +172,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
 				insCoor(i-1,j,tokenLock);
 			}
-				
+
 			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
 				insCoor(i,j+1,tokenLock);
 			}
@@ -185,25 +185,25 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
 				insCoor(i+1,j,tokenLock);
 			}
-			
+
 			if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
 				tokenLock.setCoordenateX(i-1);
 				tokenLock.setCoordenateY(j);
 			}
-	
+
 			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
 				insCoor(i,j+1,tokenLock);
 			}
-			
+
 		}if(j==6){
 			if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
 				insCoor(i+1,j,tokenLock);
 			}
-			
+
 			if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
 				insCoor(i-1,j,tokenLock);
 			}
-		
+
 			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
 				insCoor(i,j-1,tokenLock);
 			}
@@ -212,33 +212,33 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
 				insCoor(i,j+1,tokenLock);
 			}
-			
+
 			if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);		
+				insCoor(i,j-1,tokenLock);
 			}
-			
+
 			if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);		
+				insCoor(i+1,j,tokenLock);
 			}
 
 		}if(i==6){
 			if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);		
+				insCoor(i,j+1,tokenLock);
 			}
 
 			if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
 				insCoor(i,j-1,tokenLock);
 			}
-			
+
 			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				insCoor(i-1,j,tokenLock);		
+				insCoor(i-1,j,tokenLock);
 			}
-			
+
 		}if(j==1){
 			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
 				insCoor(i,j+1,tokenLock);
 			}
-		
+
 		}if(j==5){
 			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
 				insCoor(i,j-1,tokenLock);
@@ -250,32 +250,32 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 				insCoor(i+1,j,tokenLock);
 			}
 		}
-		
+
 		if(i==5){
 			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
 				insCoor(i-1,j,tokenLock);}
 			}
-		
-	
+
+
 		//comprueba si se encierra solo
 		if((j>0)&&(j<6)&&(i>0)&&(i<6)){
 			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)||
 			   (state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
 				insCoor(i,j,tokenLock);
 			}
-		}	
-		
+		}
+
 		}if((i==0)||(i==6)){
 			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
 				insCoor(i,j,tokenLock);
 			}
-			
+
 		}
-		
+
 		if((j==0)||(j==6)){
 			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)){
 				insCoor(i,j,tokenLock);
-			}	
+			}
 		}
 
 	return tokenLock;

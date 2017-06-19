@@ -56,21 +56,46 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			turnTokens = state.getTokensCPU();
 		}
 		if ((!occupied(row,column,state.getBoard())) && (turnTokens>0)){
+
+
+
 			Token newToken = new Token(currentTurn);
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
 			auxBoard[row][column] = newToken;
-			if (currentTurn == 1){
-				if(state.getTokensCPU()>0)
-					res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
-				else
-					res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
-			}else{
-				if(state.getTokensUser()>0)
-					res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
-				else
-					res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+			Token aux = locked(auxBoard, currentTurn, row, column);
+
+			if(aux != null){
+				auxBoard[aux.getCoordenateY()][aux.getCoordenateX()] = new Token(0);
+				if (currentTurn == 1){
+					if(state.getTokensCPU()>0)
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert and delete");
+					else
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert and delete");
+				}else{
+					if(state.getTokensUser()>0)
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert and delete");
+					else
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert and delete");
+				}
 			}
+			else{
+				if (currentTurn == 1){
+					if(state.getTokensCPU()>0)
+						res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,auxBoard,"Insert");
+				}else{
+					if(state.getTokensUser()>0)
+						res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,auxBoard,"Insert");
+					else
+						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
+				}
+			}
+
+
+
+
 		}else{
 			if(occupied(row,column,auxBoard)){
 				System.out.println("Casillero ocupado");
@@ -80,61 +105,6 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	}
 
-	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
-		/*public StatePathagon insertToken(StatePathagon state, int column, int row){
-
-			StatePathagon res = null;
-			int currentTurn = state.getTurn();
-			int turnTokens;
-			if( currentTurn==1){
-				turnTokens = state.getTokensUser();
-			}else{
-				turnTokens = state.getTokensCPU();
-			}
-
-			if ((state.getBoard()[row][column].getId()==0) && (turnTokens>0)){
-				Token newToken = new Token(currentTurn);
-				newToken.setCoordenateX(column);
-				newToken.setCoordenateY(row);
-				state.getBoard()[row][column] = newToken;
-				if(locked(state,row,column).getCoordenateX()==-1){
-					if (currentTurn == 1){
-						if(state.getTokensCPU()>0)
-							res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
-						else
-							res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
-					}else{
-						if(state.getTokensUser()>0)
-							res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
-						else
-							res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
-					}
-				}else{
-					int a=locked(state,row,column).getCoordenateX();
-					int b=locked(state,row,column).getCoordenateY();
-					state.getBoard()[a][b].setId(0);
-					if (currentTurn == 1){
-						state.setTokensCPU(turnTokens+1);
-						if(state.getTokensCPU()>0)
-							res = new StatePathagon(!state.isMax(),turnTokens-1,state.getTokensCPU(),2,state.getBoard(),"Insert");
-						else
-							res = new StatePathagon(state.isMax(),turnTokens-1, state.getTokensCPU(),1,state.getBoard(),"Insert");
-					}else
-						state.setTokensUser(turnTokens+1);
-						if(state.getTokensUser()>0)
-							res = new StatePathagon(!state.isMax(),state.getTokensUser(),turnTokens-1,1,state.getBoard(),"Insert");
-						else
-							res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,state.getBoard(),"Insert");
-
-				}
-			}else{
-				if(state.getBoard()[row][column].getId()!=0)
-					System.out.println("Casillero ocupado");
-				}
-
-			return res;
-
-	}*/
 	//retorna true si el casillero esta ocupado
 	public boolean occupied(int i, int j,Token[][] board){
 		if(board[i][j].getId()!=0)
@@ -142,145 +112,68 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return false;
 	}
 
-	public void insCoor(int i, int j, Token f){
-		f.setCoordenateX(j);
-		f.setCoordenateY(i);
-	}
+	//devuelve true si inserto una ficha y me encierro solo
+	public boolean Tabclosed(Token[][] board, int i, int j){
 
-	public Token locked(StatePathagon state, int i, int j){
-		Token tokenLock = new Token(1);
+			 if((j>0)&&(j<6)&&(i>0)&&(i<6)){
+					 if((board[i-1][j].getId()==2)&&(board[i+1][j].getId()==1)||
+							(board[i][j-1].getId()==2)&&(board[i][j+1].getId()==1)){
+							 return true;
+					 }
+			 }
+
+			 if((i==0)||(i==6)){
+					 if((board[i][j-1].getId()==2)&&(board[i][j+1].getId()==1)){
+							 return true;
+					 }
+			 }
+
+			 if((j==0)||(j==6)){
+					 if((board[i-1][j].getId()==2)&&(board[i+1][j].getId()==1)){
+							 return true;
+					 }
+			 }
+	 return false;
+	 }
+
+
+  public Token locked(Token[][] board, int turn, int i, int j){
+		Token tokenLock = null;
 		int p;
 		int q;
-		if(state.getTurn()==1){
-			tokenLock.setId(1);
-			 p=1;
-			 q=2;
+		if(turn == 1){
+			p=1;
+			q=2;
 		}
 		else{
-			tokenLock.setId(2);
-			 p=2;
-			 q=1;
+			p=2;
+			q=1;
 		}
-		//si es alguna de las esquinas, entonces no puede ser encerrado
-		if((i==0&&j==0)||(i==0&&j==6)||(i==6&&j==0)||(i==6&&j==6)){
-			insCoor(-1,-1,tokenLock);
-		if((j>1)&&(j<5)&&(i>1)&&(i<5)){
-			if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);
-			}
-
-			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				insCoor(i-1,j,tokenLock);
-			}
-
-			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);
-			}
-
-			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);
-			}
-
-		}if(j==0){
-			if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);
-			}
-
-			if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				tokenLock.setCoordenateX(i-1);
-				tokenLock.setCoordenateY(j);
-			}
-
-			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);
-			}
-
-		}if(j==6){
-			if((i<5)&&(state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);
-			}
-
-			if((i>1)&&(state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				insCoor(i-1,j,tokenLock);
-			}
-
-			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);
-			}
-
-		}if(i==0){
-			if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);
-			}
-
-			if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);
-			}
-
-			if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);
-			}
-
-		}if(i==6){
-			if((j<5)&&(state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);
-			}
-
-			if((j>1)&&(state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);
-			}
-
-			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				insCoor(i-1,j,tokenLock);
-			}
-
-		}if(j==1){
-			if((state.getBoard()[i][j+1].getId()==q)&&(state.getBoard()[i][j+2].getId()==p)){
-				insCoor(i,j+1,tokenLock);
-			}
-
-		}if(j==5){
-			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j-2].getId()==p)){
-				insCoor(i,j-1,tokenLock);
+		if(Tabclosed(board,i,j)){
+		  tokenLock = new Token(turn,i,j);
+		}
+		if(j>1){
+		  if((board[i][j-1].getId()==q)&&(board[i][j-2].getId()==p)){
+			  tokenLock = new Token(turn,i,j-1);
 			}
 		}
-
-		if(i==1){
-			if((state.getBoard()[i+1][j].getId()==q)&&(state.getBoard()[i+2][j].getId()==p)){
-				insCoor(i+1,j,tokenLock);
+		if(j<5){
+			if((board[i][j+1].getId()==q)&&(board[i][j+2].getId()==p)){
+				tokenLock = new Token(turn,i,j+1);
 			}
 		}
-
-		if(i==5){
-			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i-2][j].getId()==p)){
-				insCoor(i-1,j,tokenLock);}
-			}
-
-
-		//comprueba si se encierra solo
-		if((j>0)&&(j<6)&&(i>0)&&(i<6)){
-			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)||
-			   (state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
-				insCoor(i,j,tokenLock);
+		if(i>1){
+			if((board[i-1][j].getId()==q)&&(board[i-2][j].getId()==p)){
+				tokenLock = new Token(turn,i-1,j);
 			}
 		}
-
-		}if((i==0)||(i==6)){
-			if((state.getBoard()[i][j-1].getId()==q)&&(state.getBoard()[i][j+1].getId()==q)){
-				insCoor(i,j,tokenLock);
-			}
-
-		}
-
-		if((j==0)||(j==6)){
-			if((state.getBoard()[i-1][j].getId()==q)&&(state.getBoard()[i+1][j].getId()==q)){
-				insCoor(i,j,tokenLock);
+		if(i<5){
+			if((board[i+1][j].getId()==q)&&(board[i+2][j].getId()==p)){
+				tokenLock = new Token(turn,i+1,j);
 			}
 		}
-
-	return tokenLock;
-	}
-
+		return tokenLock;
+	 }
 
 	public List<StatePathagon> getSuccessors(StatePathagon state) {
 		List<StatePathagon> successors = new LinkedList<StatePathagon>();

@@ -6,8 +6,17 @@ import java.util.Scanner;
 
 import java.util.List;
 
-public class appPathagon {
+/**
+ * Title:        appPathagon
+ * @author Armas Lucas, Sanchez Daniel
+ * @version 0.1
+ */
+public class AppPathagon {
 
+	/**
+	 * Method used to print some aspects of the game
+	 * @param StatePathagon state [description]
+	 */
 	private static void showGame(StatePathagon state){
 		state.printBoard();
 		System.out.println("ES EL TURNO DEL JUGADOR: "+state.getTurn()+ "\n");
@@ -15,17 +24,27 @@ public class appPathagon {
 		System.out.println("CPU TIENE: "+state.getTokensCPU()+" FICHAS \n");
 
 	}
-
+	/**
+	 * Method used to compute the user or CPU game
+	 * @param  ProblemPathagon                                      problem       current problem
+	 * @param  StatePathagon                                        state         current state
+	 * @param  MinMaxAlphaBetaEngine<ProblemPathagon,StatePathagon> engine
+	 * @return             game state
+	 */
 	private static StatePathagon play(ProblemPathagon problem, StatePathagon state, MinMaxAlphaBetaEngine<ProblemPathagon,StatePathagon> engine){
 		StatePathagon res = null;
 		Scanner scan = new Scanner(System.in);
 		int x,y;
 		if(state.getTurn()==1){
-			System.out.println("DEBE INGRESAR LAS COORDENADAS DONDE INSERTAR LA FICHA");
-			System.out.println("INGRESE LAS COORDENADAS : ");
+			System.out.println("INGRESE LAS COORDENADAS DONDE DESEA INSERTAR LA FICHA: \n");
 			x = scan.nextInt();
 			y = scan.nextInt();
-			res = problem.insertToken(state,x,y);
+			if(x<0 || x>6 || y<0 || y>6){
+				throw new IllegalArgumentException("In class appPathagon, method play: Incorrect input of coordinates");
+			}
+			else{
+				res = problem.insertToken(state,x,y);
+			}
 		}
 		else{
 			res = engine.computeSuccessor(state);
@@ -41,6 +60,7 @@ public class appPathagon {
 		while(!problem.end(currentState)){
 			showGame(currentState);
 			currentState = play(problem,currentState,engine);
+			System.out.println("\n  MOVIMIENTO APLICADO: "+ currentState.ruleApplied());
 		}
 		showGame(currentState);
 		if(problem.value(currentState)==0){
@@ -52,28 +72,6 @@ public class appPathagon {
 		else{
 			System.out.println("RESULTADO DEL JUEGO: EMPATE");
 		}
-		/*Token token1 = new Token(1,0,6);
-		Token token2 = new Token(1,1,6);
-		Token token3 = new Token(1,2,6);
-		Token token4 = new Token(1,3,6);
-		Token token5 = new Token(1,4,6);
-		Token token6 = new Token(1,5,6);
-		Token token7 = new Token(1,6,6);
-
-		currentState.getBoard()[0][6] = token1;
-		currentState.getBoard()[1][6] = token2;
-		currentState.getBoard()[2][6] = token3;
-		currentState.getBoard()[3][6] = token4;
-		currentState.getBoard()[4][6] = token5;
-		currentState.getBoard()[5][6] = token6;
-		currentState.getBoard()[6][6] = token7;
-		System.out.println("DFS...");
-		System.out.println(problem.dfs_modified(token1,currentState));
-		System.out.println("END...");
-		System.out.println(problem.end(currentState));
-		System.out.println("VALUE...");
-		System.out.println(problem.value(currentState));*/
-
 	}
 
 }

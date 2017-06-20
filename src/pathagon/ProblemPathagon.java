@@ -9,11 +9,22 @@ import framework.AdversarySearchProblem;
 import framework.AdversarySearchState;
 import utilities.*;
 
+/**
+ * Title:        ProblemPathagon
+ * @author Armas Lucas, Sanchez Daniel
+ * @version 0.1
+ */
 public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
+	/**
+	 * Class builder
+	 */
 	public ProblemPathagon(){}
 
-
+	/**
+	 * Initial game state
+	 * @return initial state with empty board
+	 */
 	public StatePathagon initialState() {
 		Token[][] newBoard = new Token[7][7];
 		for(int i=0; i<newBoard.length; i++){
@@ -27,19 +38,27 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return init;
 	}
 
+	/**
+	 * @return Return the min value used on MinMax
+	 */
 	public int minValue(){
-
 		return -10000;
-
 	}
 
+	/**
+	 * @return Return the max value used on MinMax
+	 */
 	public int maxValue(){
-
 		return 10000;
-
 	}
 
-	// Podriamos controlar despues de insertar si encerramos una ficha del oponente o no
+	/**
+	 * Insert token on the game board
+	 * @param  StatePathagon state         current state
+	 * @param  int           row           row to insert
+	 * @param  int           column        column to insert
+	 * @return               state whit insert token
+	 */
 	public StatePathagon insertToken(StatePathagon state, int row, int column){
 		Token[][] auxBoard = new Token[7][7];
 		for (int i=0; i<auxBoard.length; i++){
@@ -56,15 +75,11 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			turnTokens = state.getTokensCPU();
 		}
 		if ((!occupied(row,column,state.getBoard())) && (turnTokens>0)){
-
-
-
 			Token newToken = new Token(currentTurn);
 			newToken.setCoordenateX(column);
 			newToken.setCoordenateY(row);
 			auxBoard[row][column] = newToken;
 			Token aux = locked(auxBoard, currentTurn, row, column);
-
 			if(aux != null){
 				auxBoard[aux.getCoordenateY()][aux.getCoordenateX()] = new Token(0);
 				if (currentTurn == 1){
@@ -92,51 +107,73 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 						res = new StatePathagon(state.isMax(),state.getTokensUser(),turnTokens-1,2,auxBoard,"Insert");
 				}
 			}
-
-
-
-
 		}else{
 			if(occupied(row,column,auxBoard)){
-				System.out.println("Casillero ocupado");
+				throw new IllegalArgumentException("In class ProblemPathagon, method insert: Incorrect input of coordinates, position occupied");
 			}
 		}
 		return res;
-
 	}
 
-	//retorna true si el casillero esta ocupado
+	/**
+	 * Indicates when a position are occupied
+	 * @param  int       i             [description]
+	 * @param  int       j             [description]
+	 * @param  Token[][] board         [description]
+	 * @return           [description]
+	 */
 	public boolean occupied(int i, int j,Token[][] board){
 		if(board[i][j].getId()!=0)
 			return true;
 		return false;
 	}
 
-	//devuelve true si inserto una ficha y me encierro solo
-	public boolean Tabclosed(Token[][] board, int i, int j){
+	/**
+	 * Indicates whether the inserted token is closed
+	 * @param  Token[][] board
+	 * @param  int       oponentToken  oponent's type token
+	 * @param  int       i             current y-coordinate
+	 * @param  int       j             current x-coordinate
+	 * @return      true if closed or false but it is
+	 */
+	public boolean autoLocked(Token[][] board, int oponentToken, int i, int j){
+		if((j>0)&&(j<6)&&(i>0)&&(i<6)){
+			if((board[i-1][j].getId()==oponentToken)&&(board[i+1][j].getId()==oponentToken)||
+				(board[i][j-1].getId()==oponentToken)&&(board[i][j+1].getId()==oponentToken)){
+				return true;
+			}
+		}
+		if((i==0)&&(j<6)&&(j>0)){
+			if((board[i][j-1].getId()==oponentToken)&&(board[i][j+1].getId()==oponentToken)){
+				return true;
+			}
+		}
+		if((i==6)&&(j<6)&&(j>0)){
+			if((board[i][j-1].getId()==oponentToken)&&(board[i][j+1].getId()==oponentToken)){
+				return true;
+			}
+		}
+		if((j==0)&&(i<6)&&(i>0)){
+			if((board[i-1][j].getId()==oponentToken)&&(board[i+1][j].getId()==oponentToken)){
+				return true;
+			}
+		}
+		if((j==6)&&(i<6)&&(i>0)){
+			if((board[i-1][j].getId()==oponentToken)&&(board[i+1][j].getId()==oponentToken)){
+				return true;
+			}
+		}
+  return false;
+  }
 
-			 if((j>0)&&(j<6)&&(i>0)&&(i<6)){
-					 if((board[i-1][j].getId()==2)&&(board[i+1][j].getId()==1)||
-							(board[i][j-1].getId()==2)&&(board[i][j+1].getId()==1)){
-							 return true;
-					 }
-			 }
-
-			 if((i==0)||(i==6)){
-					 if((board[i][j-1].getId()==2)&&(board[i][j+1].getId()==1)){
-							 return true;
-					 }
-			 }
-
-			 if((j==0)||(j==6)){
-					 if((board[i-1][j].getId()==2)&&(board[i+1][j].getId()==1)){
-							 return true;
-					 }
-			 }
-	 return false;
-	 }
-
-
+	/**
+	 * Indicates whether the inserted token encloses another or encloses itself
+	 * @param  Token[][] board         current game board
+	 * @param  int       turn          current turn
+	 * @param  int       i             y-coordinate
+	 * @param  int       j             x-coordinate
+	 * @return       locked token
+	 */
   public Token locked(Token[][] board, int turn, int i, int j){
 		Token tokenLock = null;
 		int p;
@@ -149,7 +186,7 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			p=2;
 			q=1;
 		}
-		if(Tabclosed(board,i,j)){
+		if(autoLocked(board,q,i,j)){
 		  tokenLock = new Token(turn,i,j);
 		}
 		if(j>1){
@@ -175,6 +212,11 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return tokenLock;
 	 }
 
+	/**
+	 * Gets a list of the following possible states
+	 * @param  StatePathagon state         vurrent state
+	 * @return              list of the following possible states
+	 */
 	public List<StatePathagon> getSuccessors(StatePathagon state) {
 		List<StatePathagon> successors = new LinkedList<StatePathagon>();
 		int turn = state.getTurn();
@@ -192,17 +234,19 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return successors;
 	}
 
-
+	/**
+	 * Indicates whether a state is final
+	 * @param  StatePathagon state         current state
+	 * @return         true if it is a final state or false but it is
+	 */
 	public boolean end(StatePathagon state) {
 		int aux=0;
 		if(state.getTokensUser() == 0 && state.getTokensCPU() == 0)
 			return true;
-
 		if (state.getTurn()==1){
 			for(int i=0; i<state.getBoard().length; i++){
 				if(state.getBoard()[0][i].getId()==1){
 					Token init = state.getBoard()[0][i];
-					//System.out.println("ID"+init.getId()+" Fila: "+init.getCoordenateY()+" colum "+init.getCoordenateX());
 					aux = dfs_modified(init,state);
 				}
 			}
@@ -218,8 +262,11 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return aux==7;
 	}
 
-	// Se asume que el usuario juega de abajo hacia arriba y cpu juega de izquierda a
-	// derecha.
+	/**
+	 * Method used to valuate a state
+	 * @param  StatePathagon state         current state
+	 * @return          value of the state
+	 */
 	public int value(StatePathagon state) {
 		int aux = 0;
 		int result = 0;
@@ -250,6 +297,13 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return 7 - result;
 	}
 
+	/**
+	 * Gets the adjacent token on the board
+	 * @param  int       j             x-coordinate of current token
+	 * @param  int       i             y-coordinate of current token
+	 * @param  Token[][] board         current game board
+	 * @return          tokens list adjacent
+	 */
 	public List<Token> adjacent(int j, int i, Token[][] board){
 		List<Token> adjacentList = new LinkedList<Token>();
 		if(i>0 && i<6 && j>0 && j<6){
@@ -345,6 +399,11 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 		return adjacentList;
 	}
 
+	/**
+	 * Gets the next unvisited adjacent token
+	 * @param  List<Token> adj           adjacent tokens
+	 * @return           the first unvisited adjacent token
+	 */
 	public Token getUnvisitedAdj(List<Token> adj){
 		int i=0;
 		while(i<adj.size()){
@@ -359,6 +418,13 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 			return null;
 	}
 
+	/**
+	 * Gets the maximum path weighted horizontally or vertically
+	 * if it is the turn of the CPU or the user respectively
+	 * @param  Token         init          Token where the path begins
+	 * @param  StatePathagon state         current state
+	 * @return           maximum path length
+	 */
 	public int dfs_modified(Token init, StatePathagon state){
 		state.unmark();
 		int dist = 0;

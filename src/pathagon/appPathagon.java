@@ -16,6 +16,8 @@ public class AppPathagon {
 	/**
 	 * Method used to print some aspects of the game
 	 * @param StatePathagon state [description]
+	 * @pre.    state!=null
+   * @post.   some properties of the game are displayed on the screen
 	 */
 	private static void showGame(StatePathagon state){
 		state.printBoard();
@@ -24,21 +26,34 @@ public class AppPathagon {
 		System.out.println("CPU TIENE: "+state.getTokensCPU()+" FICHAS \n");
 
 	}
+
 	/**
 	 * Method used to compute the user or CPU game
 	 * @param  ProblemPathagon                                      problem       current problem
 	 * @param  StatePathagon                                        state         current state
 	 * @param  MinMaxAlphaBetaEngine<ProblemPathagon,StatePathagon> engine
 	 * @return             game state
+	 * @pre.     state!=null and problem!=null and engine!=null
+   * @post.    a new state with some modification
 	 */
 	private static StatePathagon play(ProblemPathagon problem, StatePathagon state, MinMaxAlphaBetaEngine<ProblemPathagon,StatePathagon> engine){
 		StatePathagon res = null;
 		Scanner scan = new Scanner(System.in);
-		int x,y;
+		int x = 0;
+		int y = 0;
+		boolean correctPosition = false;
 		if(state.getTurn()==1){
 			System.out.println("INGRESE LAS COORDENADAS DONDE DESEA INSERTAR LA FICHA: \n");
-			x = scan.nextInt();
-			y = scan.nextInt();
+			while(!correctPosition){
+				x = scan.nextInt();
+				y = scan.nextInt();
+				if(problem.occupied(x,y,state.getBoard())){
+					System.out.println("CASILLERO OCUPADO, INGRESE OTRA POSICION \n");
+				}
+				else{
+					correctPosition = true;
+				}
+			}
 			if(x<0 || x>6 || y<0 || y>6){
 				throw new IllegalArgumentException("In class appPathagon, method play: Incorrect input of coordinates");
 			}

@@ -26,6 +26,9 @@ public class StatePathagon implements AdversarySearchState {
 	 * @param  int       turnX         Turn to play, 1 for the user and 2 for the cpu
 	 * @param  Token[][] boardX        Game board
 	 * @param  String    mov           Last rule applied
+	 * @pre.    (maxX==true or maxX==false) and tokensX>=0 and tokensX<=14 and tokensY>=0
+	 *          and tokensY<=14 and board!=null
+	 * @post.   a state objec is created
 	 */
 	public StatePathagon(boolean maxX, int tokensX, int tokensY, int turnX, Token[][] boardX, String mov){
 		max = maxX;
@@ -39,6 +42,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Return the game board
 	 * @return Token[][] board
+	 * @pre.   true
+   * @post.  current game board is returned
 	 */
 	public Token[][] getBoard(){
 		return board;
@@ -47,6 +52,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Set a board to the state
 	 * @param Token[][] boardX Game board
+	 * @pre.      boardX!=null
+   * @post.     game board is set
 	 */
 	public void setBoard(Token[][] boardX) {
 		this.board = boardX;
@@ -55,6 +62,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Indicates whether a node is min or max
 	 * @return boolean, true if node is max and flase if node is min
+	 * @pre.    true
+   * @post.   true if it is a node max or false if it is a node min
 	 */
 	public boolean isMax(){
 		return max;
@@ -62,7 +71,9 @@ public class StatePathagon implements AdversarySearchState {
 
 	/**
 	 * Set a node to max or min
-	 * @param boolean maxX [description]
+	 * @param boolean maxX
+	 * @pre.    maxX==true or maxX==false
+   * @post.   max is set
 	 */
 	public void setMax(boolean maxX) {
 		this.max = maxX;
@@ -71,6 +82,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Indicates who is the turn to play
 	 * @return int, 1 if it is the user's turn and 2 if it is the CPU's turn
+	 * @pre.    true
+   * @post.   current turn is returned
 	 */
 	public int getTurn(){
 		return turn;
@@ -79,6 +92,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Set the turn to play
 	 * @param int turnX next turn to play
+	 * @pre.     turnX==1 or turnX==2
+   * @post.    turn is set
 	 */
 	public void setTurn(int turnX) {
 		this.turn = turnX;
@@ -87,6 +102,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Indicates how many available tokens the user
 	 * @return int between 0 and 14
+	 * @pre.    true
+   * @post.   number of tokens available to the user is returned
 	 */
 	public int getTokensUser(){
 		return tokensUser;
@@ -95,6 +112,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Set the number of available tokens of the user
 	 * @param int tokensX int between 0 and 14
+	 * @pre.     tokensX>=0 and tokensX<=14
+   * @post.    number of tokens available to the user is set
 	 */
 	public void setTokensUser(int tokensX) {
 		this.tokensUser = tokensX;
@@ -103,6 +122,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Indicates how many available tokens the CPU
 	 * @return int between 0 and 14
+	 * @pre.     true
+   * @post.    number of tokens available to the CPU is returned
 	 */
 	public int getTokensCPU(){
 		return tokensCPU;
@@ -111,6 +132,8 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Set the number of available tokens of the CPU
 	 * @param int tokensX int between 0 and 14
+	 * @pre.     tokensX>=0 and tokensX<=14
+   * @post.    number of tokens available to the CPU is set
 	 */
 	public void setTokensCPU(int tokensX) {
 		this.tokensCPU = tokensX;
@@ -118,6 +141,8 @@ public class StatePathagon implements AdversarySearchState {
 
 	/**
 	 * Print the game board
+	 * @pre.    true
+   * @post.   the board is shown on the screen
 	 */
 	public void printBoard(){
 		System.out.println("\n             TABLERO");
@@ -135,6 +160,8 @@ public class StatePathagon implements AdversarySearchState {
 
 	/**
 	 * Unmark all tokens of the game board
+	 * @pre.     this!=null
+   * @post.    all tokens on the board unmarked 
 	 */
 	public void unmark(){
 		for (int i=0; i<this.board.length; i++){

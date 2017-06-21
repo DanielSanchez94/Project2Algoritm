@@ -24,6 +24,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	/**
 	 * Initial game state
 	 * @return initial state with empty board
+	 * @pre.      true
+   * @post.     a new initial state is returned
 	 */
 	public StatePathagon initialState() {
 		Token[][] newBoard = new Token[7][7];
@@ -40,6 +42,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	/**
 	 * @return Return the min value used on MinMax
+	 * @pre.     true
+   * @post.    minimum value is returned
 	 */
 	public int minValue(){
 		return -10000;
@@ -47,6 +51,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	/**
 	 * @return Return the max value used on MinMax
+	 * @pre.      true
+   * @post.     maximum value is returned
 	 */
 	public int maxValue(){
 		return 10000;
@@ -58,6 +64,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * @param  int           row           row to insert
 	 * @param  int           column        column to insert
 	 * @return               state whit insert token
+	 * @pre.     state!=null and row>=0 and row<=6 and column>=0 and column<=6
+   * @post.    a state with a new inserted token is returned
 	 */
 	public StatePathagon insertToken(StatePathagon state, int row, int column){
 		Token[][] auxBoard = new Token[7][7];
@@ -117,10 +125,12 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 
 	/**
 	 * Indicates when a position are occupied
-	 * @param  int       i             [description]
-	 * @param  int       j             [description]
-	 * @param  Token[][] board         [description]
-	 * @return           [description]
+	 * @param  int       i             current y-coordinate
+	 * @param  int       j             current x-coordinate
+	 * @param  Token[][] board         current game board
+	 * @return      true if the box is busy or false if it is not
+	 * @pre.      board!=null and i>=0 and i<=6 and j>=0 and j<=6
+   * @post.     true if the box is busy of false but not
 	 */
 	public boolean occupied(int i, int j,Token[][] board){
 		if(board[i][j].getId()!=0)
@@ -135,6 +145,9 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * @param  int       i             current y-coordinate
 	 * @param  int       j             current x-coordinate
 	 * @return      true if closed or false but it is
+	 * @pre.    board!=null and (oponentToken==1 or oponentToken==2) and
+	 *          i>=0 and i<=6 and j>=0 and j<=6
+   * @post.   true if the current token is locked or false if it is not
 	 */
 	public boolean autoLocked(Token[][] board, int oponentToken, int i, int j){
 		if((j>0)&&(j<6)&&(i>0)&&(i<6)){
@@ -173,6 +186,9 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * @param  int       i             y-coordinate
 	 * @param  int       j             x-coordinate
 	 * @return       locked token
+	 * @pre.    board!=null and (turn==1 or turn==2) and
+	 *          i>=0 and i<=6 and j>=0 and j<=6
+   * @post.   token closed is returned
 	 */
   public Token locked(Token[][] board, int turn, int i, int j){
 		Token tokenLock = null;
@@ -216,6 +232,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * Gets a list of the following possible states
 	 * @param  StatePathagon state         vurrent state
 	 * @return              list of the following possible states
+	 * @pre.    state!=null
+   * @post.   a list of possible following states is returned
 	 */
 	public List<StatePathagon> getSuccessors(StatePathagon state) {
 		List<StatePathagon> successors = new LinkedList<StatePathagon>();
@@ -238,6 +256,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * Indicates whether a state is final
 	 * @param  StatePathagon state         current state
 	 * @return         true if it is a final state or false but it is
+	 * @pre.     state!=null
+   * @post.    true if the current state is final or false if it is not
 	 */
 	public boolean end(StatePathagon state) {
 		int aux=0;
@@ -266,6 +286,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * Method used to valuate a state
 	 * @param  StatePathagon state         current state
 	 * @return          value of the state
+	 * @pre.     state!=null
+   * @post.    a value is assigned to the state depending on the heuristic chosen
 	 */
 	public int value(StatePathagon state) {
 		int aux = 0;
@@ -303,6 +325,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * @param  int       i             y-coordinate of current token
 	 * @param  Token[][] board         current game board
 	 * @return          tokens list adjacent
+	 * @pre.     board!=null and i>=0 and i<=6 and j>=0 and j<=6
+   * @post.    a list with adjacent tokens is returned
 	 */
 	public List<Token> adjacent(int j, int i, Token[][] board){
 		List<Token> adjacentList = new LinkedList<Token>();
@@ -403,6 +427,8 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * Gets the next unvisited adjacent token
 	 * @param  List<Token> adj           adjacent tokens
 	 * @return           the first unvisited adjacent token
+	 * @pre.     ajd!=null
+   * @post.    the first unvisited adjacent token in the list is returned
 	 */
 	public Token getUnvisitedAdj(List<Token> adj){
 		int i=0;
@@ -424,6 +450,9 @@ public class ProblemPathagon implements AdversarySearchProblem<StatePathagon> {
 	 * @param  Token         init          Token where the path begins
 	 * @param  StatePathagon state         current state
 	 * @return           maximum path length
+	 * @pre.       init!=null and state!=null
+   * @post.      the longest path formed by counting horizontal or vertical
+   *             advance according to the current turn is returned
 	 */
 	public int dfs_modified(Token init, StatePathagon state){
 		state.unmark();

@@ -18,6 +18,10 @@ public class StatePathagon implements AdversarySearchState {
 	private Token[][] board; //Representations of the board
 	private String ruleApplied;
 
+	private int turnLocked;
+	private int rowLocked;
+	private int columnLocked;
+
 	/**
 	 * Class builder
 	 * @param  boolean   maxX          If true is a max node but is a min node
@@ -37,6 +41,24 @@ public class StatePathagon implements AdversarySearchState {
 		turn = turnX;
 		board = boardX;
 		ruleApplied = mov;
+	}
+
+	public void setLocked(int tl, int rl, int cl){
+		this.turnLocked = tl;
+		this.rowLocked = rl;
+		this.columnLocked = cl;
+	}
+
+	public int getTurnLocked(){
+		return turnLocked;
+	}
+
+	public int getRowLocked(){
+		return rowLocked;
+	}
+
+	public int getColumnLocked(){
+		return columnLocked;
 	}
 
 	/**
@@ -161,7 +183,7 @@ public class StatePathagon implements AdversarySearchState {
 	/**
 	 * Unmark all tokens of the game board
 	 * @pre.     this!=null
-   * @post.    all tokens on the board unmarked 
+   * @post.    all tokens on the board unmarked
 	 */
 	public void unmark(){
 		for (int i=0; i<this.board.length; i++){

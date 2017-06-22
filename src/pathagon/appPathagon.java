@@ -24,7 +24,6 @@ public class AppPathagon {
 		System.out.println("ES EL TURNO DEL JUGADOR: "+state.getTurn()+ "\n");
 		System.out.println("USER TIENE: "+state.getTokensUser()+" FICHAS");
 		System.out.println("CPU TIENE: "+state.getTokensCPU()+" FICHAS \n");
-
 	}
 
 	/**

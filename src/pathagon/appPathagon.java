@@ -46,6 +46,9 @@ public class AppPathagon {
 			while(!correctPosition){
 				x = scan.nextInt();
 				y = scan.nextInt();
+				if(x<0 || x>6 || y<0 || y>6){
+					throw new IllegalArgumentException("In class appPathagon, method play: Incorrect input of coordinates");
+				}
 				if(problem.occupied(x,y,state.getBoard())){
 					System.out.println("CASILLERO OCUPADO, INGRESE OTRA POSICION \n");
 				}
@@ -53,12 +56,7 @@ public class AppPathagon {
 					correctPosition = true;
 				}
 			}
-			if(x<0 || x>6 || y<0 || y>6){
-				throw new IllegalArgumentException("In class appPathagon, method play: Incorrect input of coordinates");
-			}
-			else{
-				res = problem.insertToken(state,x,y);
-			}
+			res = problem.insertToken(state,x,y);
 		}
 		else{
 			res = engine.computeSuccessor(state);
